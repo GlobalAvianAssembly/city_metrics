@@ -12,20 +12,12 @@ var landCoverDict = ee.Dictionary.fromLists(
   landcover_c3.get('discrete_classification_class_names')
 );
   
-var freq = landcover_c3.reduceRegion({
-    reducer: ee.Reducer.frequencyHistogram(),
-    geometry: cities.first().geometry(),
-    scale: 100
+var rewriteLandCoverClasses = function(frequency) {
+  var discrete = ee.Dictionary(frequency.get('discrete_classification'));
+  return landCoverDict.map(function(key, value) {
+    return discrete.get(key, 0);
   });
-var discrete = ee.Dictionary(freq.get('discrete_classification'));
-
-print(landCoverDict.map(function(key, value) {
-  if (discrete.contains(key)) {
-    return discrete.get(key);
-  } else { 
-    return 0;
-  }
-}));
+}
   
 var stats = cities.map(function(feature) {
   var polygon = feature.geometry();
@@ -38,7 +30,7 @@ var stats = cities.map(function(feature) {
   
   return ee.Feature(
     polygon, 
-    frequency.get('discrete_classification')
+    rewriteLandCoverClasses(frequency)
   )
   .set('city_name', feature.get('NAME_MAIN'))
   .set('pop_2015', feature.get('POP_2015'));
