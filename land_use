@@ -16,7 +16,9 @@ var stats = cities.map(function(feature) {
   return ee.Feature(
     polygon, 
     frequency.get('discrete_classification')
-  ).set('city_name', feature.get('NAME_MAIN'));
+  )
+  .set('city_name', feature.get('NAME_MAIN'))
+  .set('pop_2015', feature.get('POP_2015'));
 });
 
 print(stats);
