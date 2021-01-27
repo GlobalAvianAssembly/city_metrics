@@ -26,3 +26,5 @@ Export.table.toAsset({
   description:'City land cover statistics',
   assetId: 'city_status',
 });
+
+Map.addLayer(stats);
