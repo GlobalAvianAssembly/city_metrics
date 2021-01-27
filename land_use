@@ -1,3 +1,7 @@
 /**** Start of imports. If edited, may not auto-convert in the playground. ****/
 var table = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
+
+var landcover = ee.Image("COPERNICUS/Landcover/100m/Proba-V-C3/Global/2019")
+.select('discrete_classification');
+
