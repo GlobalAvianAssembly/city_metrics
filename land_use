@@ -1,18 +1,14 @@
 /**** Start of imports. If edited, may not auto-convert in the playground. ****/
 var cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million"),
     landcover_c3 = ee.Image("COPERNICUS/Landcover/100m/Proba-V-C3/Global/2019"),
-    landcover = ee.Image("COPERNICUS/Landcover/100m/Proba-V/Global/2019");
+    landcover = ee.ImageCollection("COPERNICUS/Landcover/100m/Proba-V/Global");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
-
-    
-print(cities);
-Map.addLayer(landcover_c3);
 
 var bob = cities.map(function(feature) {
   return landcover_c3.clip(feature);
 });
 
-Map.addLayer(landcover_c3.clip(cities.first()));
+Map.addLayer(bob);
 
 var frequency = landcover_c3.reduceRegion({
   reducer: ee.Reducer.frequencyHistogram(),
