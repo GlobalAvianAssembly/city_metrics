@@ -23,7 +23,7 @@ var stats = cities.map(function(feature) {
 
 Export.table.toAsset({
   collection: stats,
-  description:'City land cover statistics',
+  description:'City-landcover-statistics',
   assetId: 'city_stats',
 });
 
