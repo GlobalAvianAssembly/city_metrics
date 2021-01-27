@@ -38,6 +38,8 @@ var stats = cities.map(function(feature) {
 
 Export.table.toCloudStorage({
   collection: stats,
+  description: 'Export city stats'
+  fileNamePrefix: 'city_copernicus_land_coverage'
   bucket:'urban_ebird'
 });
 
