@@ -109,7 +109,7 @@ var stats = cities.map(function(feature) {
     reducer: ee.Reducer.frequencyHistogram(),
     geometry: buffer,
     scale: 100,
-    maxPixels: 150000000
+    maxPixels: 300000000
   });
   
   return ee.Feature(
@@ -123,11 +123,11 @@ var stats = cities.map(function(feature) {
 
 print(stats);
 
-// Export.table.toCloudStorage({
-//   collection: stats,
-//   description: 'Export-city-land-coverage-to-gcs',
-//   fileNamePrefix: 'city_copernicus_land_coverage',
-//   bucket:'urban_ebird'
-// });
+Export.table.toCloudStorage({
+  collection: stats,
+  description: 'Export-city-land-coverage-to-gcs',
+  fileNamePrefix: 'city_copernicus_land_coverage',
+  bucket:'urban_ebird'
+});
 
-// Map.addLayer(stats);
+Map.addLayer(stats);
