@@ -3,6 +3,30 @@ var cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million"),
     landcover_c3 = ee.Image("COPERNICUS/Landcover/100m/Proba-V-C3/Global/2019");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
+var valuesAsStrings = 
+  ee.List(landcover_c3.get('discrete_classification_class_values'))
+    .map(function(i) {return new ee.String(i)});
+
+var landCoverDict = ee.Dictionary.fromLists(
+  valuesAsStrings,
+  landcover_c3.get('discrete_classification_class_names')
+);
+  
+var freq = landcover_c3.reduceRegion({
+    reducer: ee.Reducer.frequencyHistogram(),
+    geometry: cities.first().geometry(),
+    scale: 100
+  });
+var discrete = ee.Dictionary(freq.get('discrete_classification'));
+
+print(landCoverDict.map(function(key, value) {
+  if (discrete.contains(key)) {
+    return discrete.get(key);
+  } else { 
+    return 0;
+  }
+}));
+  
 var stats = cities.map(function(feature) {
   var polygon = feature.geometry();
   var frequency = landcover_c3.reduceRegion({
