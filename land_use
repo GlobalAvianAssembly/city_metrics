@@ -21,4 +21,8 @@ var stats = cities.map(function(feature) {
   .set('pop_2015', feature.get('POP_2015'));
 });
 
-print(stats);
+Export.table.toAsset({
+  collection: stats,
+  description:'City land cover statistics',
+  assetId: 'city_status',
+});
