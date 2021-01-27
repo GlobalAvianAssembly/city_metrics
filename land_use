@@ -11,12 +11,36 @@ var landCoverDict = ee.Dictionary.fromLists(
   valuesAsStrings,
   landcover_c3.get('discrete_classification_class_names')
 );
+
+print(landCoverDict);
   
-var rewriteLandCoverClasses = function(frequency) {
-  var discrete = ee.Dictionary(frequency.get('discrete_classification'));
-  return landCoverDict.map(function(key, value) {
-    return discrete.get(key, 0);
-  });
+var rewriteLandCoverClasses = function(prefix, frequency) {
+  var discrete = new ee.Dictionary(frequency.get('discrete_classification'));
+  return new ee.Dictionary()
+    .set(prefix + '_lc_unknown', discrete.get('0', 0))
+    .set(prefix + '_lc_moss_and_lichen', discrete.get('100', 0))
+    .set(prefix + '_lc_closed_forest_evergreen_needle', discrete.get('111', 0))
+    .set(prefix + '_lc_closed_forest_evergreen_broadleaf', discrete.get('112', 0))
+    .set(prefix + '_lc_closed_forest_deciduous_needle', discrete.get('113', 0))
+    .set(prefix + '_lc_closed_forest_deciduous_broadleaf', discrete.get('114', 0))
+    .set(prefix + '_lc_closed_forest_mixed', discrete.get('115', 0))
+    .set(prefix + '_lc_closed_forest_other', discrete.get('116', 0))
+    .set(prefix + '_lc_open_forest_evergreen_needle', discrete.get('121', 0))
+    .set(prefix + '_lc_open_forest_evergreen_broadleaf', discrete.get('122', 0))
+    .set(prefix + '_lc_open_forest_deciduous_needle', discrete.get('123', 0))
+    .set(prefix + '_lc_open_forest_deciduous_broadleaf', discrete.get('124', 0))
+    .set(prefix + '_lc_open_forest_mixed', discrete.get('125', 0))
+    .set(prefix + '_lc_open_forest_other', discrete.get('126', 0))
+    .set(prefix + '_lc_shrubs', discrete.get('20', 0))
+    .set(prefix + '_lc_ocean', discrete.get('200', 0))
+    .set(prefix + '_lc_herbaceous_vegetation', discrete.get('30', 0))
+    .set(prefix + '_lc_cultivated', discrete.get('40', 0))
+    .set(prefix + '_lc_urban', discrete.get('50', 0))
+    .set(prefix + '_lc_bare', discrete.get('60', 0))
+    .set(prefix + '_lc_snow', discrete.get('70', 0))
+    .set(prefix + '_lc_permanent_water', discrete.get('80', 0))
+    .set(prefix + '_lc_herbaceous_wetland', discrete.get('90', 0))
+  ;
 }
   
 var stats = cities.map(function(feature) {
@@ -30,17 +54,19 @@ var stats = cities.map(function(feature) {
   
   return ee.Feature(
     polygon, 
-    rewriteLandCoverClasses(frequency)
+    rewriteLandCoverClasses('city', frequency)
   )
   .set('city_name', feature.get('NAME_MAIN'))
   .set('pop_2015', feature.get('POP_2015'));
 });
 
-Export.table.toCloudStorage({
-  collection: stats,
-  description: 'Export-city-land-coverage-to-gcs',
-  fileNamePrefix: 'city_copernicus_land_coverage',
-  bucket:'urban_ebird'
-});
+print(stats);
 
-Map.addLayer(stats);
+// Export.table.toCloudStorage({
+//   collection: stats,
+//   description: 'Export-city-land-coverage-to-gcs',
+//   fileNamePrefix: 'city_copernicus_land_coverage',
+//   bucket:'urban_ebird'
+// });
+
+// Map.addLayer(stats);
