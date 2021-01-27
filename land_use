@@ -36,10 +36,9 @@ var stats = cities.map(function(feature) {
   .set('pop_2015', feature.get('POP_2015'));
 });
 
-Export.table.toAsset({
+Export.table.toCloudStorage({
   collection: stats,
-  description:'City-landcover-statistics',
-  assetId: 'city_stats',
+  bucket:'urban_ebird'
 });
 
 Map.addLayer(stats);
