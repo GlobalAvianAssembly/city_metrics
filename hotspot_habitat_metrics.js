@@ -17,6 +17,8 @@ var updated = hotspots.limit(200).map(function(feature) {
     point,
     new ee.Dictionary()
       .combine(metricsForBuffer(point, 1000, 'b1km'))
+      .combine(metricsForBuffer(point, 2000, 'b2km'))
+      .combine(metricsForBuffer(point, 5000, 'b5km'))
       .set('city_name', feature.get('NAME_MAIN'))
       .set('hotspot_id', feature.get('hotspot_id'))
       .set('elevation', feature.get('ELEVATION'))
