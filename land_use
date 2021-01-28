@@ -7,7 +7,7 @@ var LandCoverage = require('users/jamesr/city_metrics:modules/LandCoverage');
   
 var stats = cities.map(function(feature) {
   var polygon = feature.geometry();
-  var frequency_city = LandCoverage.coverage(polygon, 10000000);
+  var frequency_city = LandCoverage.coverage(polygon, 15000000);
   
   var buffer = polygon.buffer(100000).difference(polygon);
   var frequency_region = LandCoverage.coverage(buffer, 300000000);
