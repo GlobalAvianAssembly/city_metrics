@@ -39,4 +39,11 @@ var updated = hotspots.limit(200).map(function(feature) {
   );
 });
 
+Export.table.toCloudStorage({
+  collection: updated,
+  description: 'Export-hotspot-land-coverage-to-gcs',
+  fileNamePrefix: 'hotspot_copernicus_land_coverage_and_pop_density',
+  bucket:'urban_ebird'
+});
+
 Map.addLayer(updated);
