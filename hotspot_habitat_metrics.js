@@ -5,10 +5,6 @@ var hotspots = ee.FeatureCollection("users/jamesr/UrbanHotspots"),
 
 var LandCoverage = require('users/jamesr/city_metrics:modules/LandCoverage.js');
 
-function guaranteedValue(val) {
-  return val === null? 'X' : val;
-}
-
 function averagePopulationDensity(polygon) {
   var val = populationDensity.reduceRegion({
     reducer: ee.Reducer.mean(),
@@ -38,10 +34,10 @@ var updated = hotspots.map(function(feature) {
       .combine(metricsForBuffer(point, 3000, 'b3km'))
       .combine(metricsForBuffer(point, 4000, 'b4km'))
       .combine(metricsForBuffer(point, 5000, 'b5km'))
-      .set('city_name', guaranteedValue(feature.get('NAME_MAIN')))
-      .set('hotspot_id', guaranteedValue(feature.get('hotspot_id')))
-      .set('elevation', guaranteedValue(feature.get('ELEVATION')))
-      .set('latitude', guaranteedValue(feature.get('lat')))
+      .set('city_name', feature.get('NAME_MAIN'))
+      .set('hotspot_id', feature.get('hotspot_id'))
+      .set('elevation', feature.get('ELEVATION'))
+      .set('latitude', feature.get('lat'))
   );
 });
 
