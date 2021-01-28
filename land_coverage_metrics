@@ -1,4 +1,4 @@
-
+var landcover_c3 = ee.Image("COPERNICUS/Landcover/100m/Proba-V-C3/Global/2019");
 
 var rewriteLandCoverClasses = function(prefix, frequency, area) {
   var discrete = new ee.Dictionary(frequency.get('discrete_classification'));
