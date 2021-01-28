@@ -6,13 +6,12 @@ var hotspots = ee.FeatureCollection("users/jamesr/UrbanHotspots"),
 var LandCoverage = require('users/jamesr/city_metrics:modules/LandCoverage.js');
 
 function averagePopulationDensity(polygon) {
-  var val = populationDensity.reduceRegion({
+  return populationDensity.reduceRegion({
     reducer: ee.Reducer.mean(),
     geometry: polygon,
     scale: 100,
     maxPixels: 1e9
   }).get('b1');
-  return guaranteedValue(val);
 }
 
 function metricsForBuffer(point, bufferSize, prefix) {
