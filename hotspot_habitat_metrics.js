@@ -33,6 +33,7 @@ var updated = hotspots.limit(200).map(function(feature) {
       .set('city_name', feature.get('NAME_MAIN'))
       .set('hotspot_id', feature.get('hotspot_id'))
       .set('elevation', feature.get('ELEVATION'))
+      .set('latitude', feature.get('lat'))
   );
 });
 
