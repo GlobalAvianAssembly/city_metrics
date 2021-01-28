@@ -17,7 +17,7 @@ exports.doc = 'The LandCoverage module generates the land coverage attributes fo
     '\n'
 
 exports.coverage = function(polygon, maxPixels) {
-  landcover_c3.reduceRegion({
+  return landcover_c3.reduceRegion({
     reducer: ee.Reducer.frequencyHistogram(),
     geometry: polygon,
     scale: 100,
