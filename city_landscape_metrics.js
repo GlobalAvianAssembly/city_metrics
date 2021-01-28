@@ -2,7 +2,7 @@
 var cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
-var LandCoverage = require('users/jamesr/city_metrics:modules/LandCoverage');
+var LandCoverage = require('users/jamesr/city_metrics:modules/LandCoverage.js');
 
   
 var stats = cities.map(function(feature) {
