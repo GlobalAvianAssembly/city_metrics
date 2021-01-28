@@ -27,6 +27,7 @@ var updated = hotspots.map(function(feature) {
   return ee.Feature(
     point,
     new ee.Dictionary()
+      .combine(metricsForBuffer(point, 500, 'b500'))
       .combine(metricsForBuffer(point, 1000, 'b1km'))
       .combine(metricsForBuffer(point, 2000, 'b2km'))
       .combine(metricsForBuffer(point, 3000, 'b3km'))
