@@ -1,21 +1,24 @@
 /**** Start of imports. If edited, may not auto-convert in the playground. ****/
-var hotspots = ee.FeatureCollection("users/jamesr/UrbanHotspots");
+var hotspots = ee.FeatureCollection("users/jamesr/UrbanHotspots"),
+    populationDensity = ee.Image("users/jamesr/GHS_POP_E2015_GLOBE_R2019A_54009_250_V1_0");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
 var LandCoverage = require('users/jamesr/city_metrics:modules/LandCoverage.js');
 
 function averagePopulationDensity(polygon) {
-  return = image.reduceRegion({
+  return populationDensity.reduceRegion({
     reducer: ee.Reducer.mean(),
-    geometry: region.geometry(),
-    scale: 30,
+    geometry: polygon,
+    scale: 100,
     maxPixels: 1e9
-  });
+  }).get('b1');
 }
+
 function metricsForBuffer(point, bufferSize, prefix) {
-  var buffer_1km = point.buffer(bufferSize);
-  var frequency = LandCoverage.coverage(buffer_1km, bufferSize * 1000);
-  return LandCoverage.metrics(prefix, frequency, buffer_1km.area());
+  var buffer = point.buffer(bufferSize);
+  var frequency = LandCoverage.coverage(buffer, bufferSize * 1000);
+  return LandCoverage.metrics(prefix, frequency, buffer.area())
+    .set(prefix + '_avg_pop_density', averagePopulationDensity(buffer));
 }
 
 var updated = hotspots.limit(200).map(function(feature) {
