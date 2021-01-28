@@ -6,10 +6,24 @@ exports.doc = 'The LandCoverage module generates the land coverage attributes fo
     '\n' +
     '\n metrics(prefix, frequency, area):' +
     '\n   @param {ee.String} prefix The prefix to put before all attributes' +
-    '\n   @param {ee.String} frequency The frequency object from generating land coverage of the polygon' +
-    '\n   @param {ee.String} area The calculated area of the polygon +
+    '\n   @param {ee.Object} frequency The frequency object from generating land coverage of the polygon' +
+    '\n   @param {ee.Number} area The calculated area of the polygon' +
+    '\n   @return {ee.Dictionary} The dictionary of attributes to values' +
+    '\n' +
+    '\n coverage(polygon, maxPixels):' +
+    '\n   @param {ee.Geometry} polygon The polygon to produce land cover frequency object for' +
+    '\n   @param {ee.Number} maxPixels The maximum number of pixels to accept' +
+    '\n   @return {ee.Object} The frequency object for land coverage ' +
     '\n'
 
+exports.coverage = function(polygon, maxPixels) {
+  landcover_c3.reduceRegion({
+    reducer: ee.Reducer.frequencyHistogram(),
+    geometry: polygon,
+    scale: 100,
+    maxPixels: maxPixels
+  });
+}
 
 exports.metrics = function(prefix, frequency, area) {
   var discrete = new ee.Dictionary(frequency.get('discrete_classification'));
