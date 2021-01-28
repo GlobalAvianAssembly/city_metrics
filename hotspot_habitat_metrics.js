@@ -21,7 +21,7 @@ function metricsForBuffer(point, bufferSize, prefix) {
     .set(prefix + '_avg_pop_density', averagePopulationDensity(buffer));
 }
 
-var updated = hotspots.limit(200).map(function(feature) {
+var updated = hotspots.map(function(feature) {
   var point = feature.geometry();
   
   return ee.Feature(
