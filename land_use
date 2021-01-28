@@ -7,14 +7,9 @@ var LandCoverage = require('users/jamesr/city_metrics/modules/LandCoverage.js');
   
 var stats = cities.map(function(feature) {
   var polygon = feature.geometry();
-  var frequency_city = LandCoverage.coverage()
+  var frequency_city = LandCoverage.coverage(polygon, 10000000);
   var buffer = polygon.buffer(100000).difference(polygon);
-  var frequency_region = landcover_c3.reduceRegion({
-    reducer: ee.Reducer.frequencyHistogram(),
-    geometry: buffer,
-    scale: 100,
-    maxPixels: 300000000
-  });
+  var frequency_region = LandCoverage.coverage(buffer, 300000000);
   
   return ee.Feature(
     polygon, 
