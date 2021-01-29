@@ -14,9 +14,6 @@ function averagePopulationDensity(polygon) {
 
 var hotspot = hotspots.filter("hotspot_id == 'L2558046'");
 
-// var hotspot = hotspots.map(function(feature) {
-//   return feature.set('density', averagePopulationDensity(feature.geometry()));
-// }).filter("density == 0");
 
 
 print(averagePopulationDensity(hotspot.geometry().buffer(50)))
