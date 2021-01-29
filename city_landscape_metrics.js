@@ -14,8 +14,8 @@ var stats = cities.map(function(feature) {
   
   return ee.Feature(
     null, 
-    LandCoverage.metrics('city', frequency_city, polygon.area())
-    .combine(LandCoverage.metrics('region', frequency_region, buffer.area()))
+    LandCoverage.metrics('city', frequency_city, ee.Number(polygon.area()))
+    .combine(LandCoverage.metrics('region', frequency_region, ee.Number(buffer.area())))
   )
   .set('city_name', feature.get('NAME_MAIN'))
   .set('pop_2015', feature.get('POP_2015'));
