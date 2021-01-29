@@ -4,25 +4,21 @@ var hotspots = ee.FeatureCollection("users/jamesr/UrbanHotspots"),
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
 function averagePopulationDensity(polygon) {
-  
-  var result = populationDensity.reduceRegion({
+  return populationDensity.reduceRegion({
     reducer: ee.Reducer.mean(),
     geometry: polygon,
     scale: 100,
     maxPixels: 1e9
-  }).get('b1');
-  
-  return ee.Algorithms.If({
-    condition: result,
-    trueCase: result,
-    falseCase: 0
   });
 }
 
-hotspots.filter(function(feature) {
-  return ee.Algorithms.If({
-    condition: feature.get,
-    trueCase: result,
-    falseCase: 0
-  });
-}
+var hotspot = hotspots.filter("hotspot_id == 'L2558046'");
+
+// var hotspot = hotspots.map(function(feature) {
+//   return feature.set('density', averagePopulationDensity(feature.geometry()));
+// }).filter("density == 0");
+
+
+print(averagePopulationDensity(hotspot.geometry().buffer(50)))
+Map.centerObject(hotspot.geometry(), 20);
+Map.addLayer(hotspot.geometry().buffer(50));
