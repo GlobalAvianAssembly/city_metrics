@@ -28,7 +28,7 @@ exports.coverage = function(polygon, maxPixels) {
 var decimalplaces = ee.Number(100000);
 
 function format(number) {
-  return number.multiply(decimalplaces).round().divide(decimalplaces);
+  return number.format('%g');
 }
 
 function getLandcover(frequencyDictionary, copernicusValue) {
