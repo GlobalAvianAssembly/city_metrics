@@ -43,8 +43,6 @@ function append(dictionary, prefix, key, value, area) {
 }
 
 exports.metrics = function(prefix, frequency, area) {
-  var landcover = new LandCoverFrequency(frequence);
-  
   var discrete = new ee.Dictionary(frequency.get('discrete_classification'));
   var totalLandCoverArea = discrete.values().reduce(ee.Reducer.sum());
   
