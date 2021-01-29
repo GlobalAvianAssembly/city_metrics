@@ -25,16 +25,22 @@ exports.coverage = function(polygon, maxPixels) {
   });
 }
 
+var decimalplaces = ee.Number(100000);
+
+function format(number) {
+  return number.multiply(decimalplaces).round().divide(decimalplaces);
+}
+
 function getLandcover(frequencyDictionary, copernicusValue) {
   return ee.Number(frequencyDictionary.get(copernicusValue, 0));
 }
 
 function appendNumber(dictionary, prefix, key, value) {
-  return dictionary.set(prefix + key, value.format('%.5f'))
+  return dictionary.set(prefix + key, format(value))
 }
 
 function appendPercent(dictionary, prefix, key, value, area) {
-  return dictionary.set(prefix + key, value.divide(area).format('%.5f'));
+  return dictionary.set(prefix + key, format(value.divide(area)));
 }
 
 function append(dictionary, prefix, key, value, area) {
