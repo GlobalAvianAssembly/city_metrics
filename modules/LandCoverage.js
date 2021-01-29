@@ -30,16 +30,17 @@ function getLandcover(frequencyDictionary, copernicusValue) {
 }
 
 function appendNumber(dictionary, prefix, key, value) {
-  dictionary.set(prefix + key, value.format('%.5f'))
+  return dictionary.set(prefix + key, value.format('%.5f'))
 }
 
 function appendPercent(dictionary, prefix, key, value, area) {
-  dictionary.set(prefix + key, value.divide(area).format('%.5f'))
+  return dictionary.set(prefix + key, value.divide(area).format('%.5f'));
 }
 
 function append(dictionary, prefix, key, value, area) {
-  appendNumber(dictionary, prefix, '_lc_' + key, value);
-  appendPercent(dictionary, prefix, '_pc_' + key, value, area);
+  dictionary = appendNumber(dictionary, prefix, '_lc_' + key, value);
+  dictionary = appendPercent(dictionary, prefix, '_pc_' + key, value, area);
+  return dictionary;
 }
 
 exports.metrics = function(prefix, frequency, area) {
@@ -69,37 +70,37 @@ exports.metrics = function(prefix, frequency, area) {
     .add(openForestOther);
     
   var result = new ee.Dictionary();
-  append(result, prefix, 'unknown', getLandcover(discrete, '0'), totalLandCoverArea);
-  append(result, prefix, 'moss_and_lichen', getLandcover(discrete, '100'), totalLandCoverArea);
+  result = append(result, prefix, 'unknown', getLandcover(discrete, '0'), totalLandCoverArea);
+  result = append(result, prefix, 'moss_and_lichen', getLandcover(discrete, '100'), totalLandCoverArea);
   
-  append(result, prefix, 'closed_forest_evergreen_needle', closedForestEvergreenNeedle, totalLandCoverArea);
-  append(result, prefix, 'closed_forest_evergreen_broadleaf', closedForestEvergreenBroadleaf, totalLandCoverArea);
-  append(result, prefix, 'closed_forest_deciduous_needle', closedForestDeciduousNeedle, totalLandCoverArea);
-  append(result, prefix, 'closed_forest_deciduous_broadleaf', closedForestDeciduousBroadleaf, totalLandCoverArea);
-  append(result, prefix, 'closed_forest_forest_mixed', closedForestMixed, totalLandCoverArea);
-  append(result, prefix, 'closed_forest_forest_other', closedForestOther, totalLandCoverArea);
-  append(result, prefix, 'closed_forest_forest_total', closedForestTotal, totalLandCoverArea);
+  result = append(result, prefix, 'closed_forest_evergreen_needle', closedForestEvergreenNeedle, totalLandCoverArea);
+  result = append(result, prefix, 'closed_forest_evergreen_broadleaf', closedForestEvergreenBroadleaf, totalLandCoverArea);
+  result = append(result, prefix, 'closed_forest_deciduous_needle', closedForestDeciduousNeedle, totalLandCoverArea);
+  result = append(result, prefix, 'closed_forest_deciduous_broadleaf', closedForestDeciduousBroadleaf, totalLandCoverArea);
+  result = append(result, prefix, 'closed_forest_forest_mixed', closedForestMixed, totalLandCoverArea);
+  result = append(result, prefix, 'closed_forest_forest_other', closedForestOther, totalLandCoverArea);
+  result = append(result, prefix, 'closed_forest_forest_total', closedForestTotal, totalLandCoverArea);
   
-  append(result, prefix, 'open_forest_evergreen_needle', openForestEvergreenNeedle, totalLandCoverArea);
-  append(result, prefix, 'open_forest_evergreen_broadleaf', openForestEvergreenBroadleaf, totalLandCoverArea);
-  append(result, prefix, 'open_forest_deciduous_needle', openForestDeciduousNeedle, totalLandCoverArea);
-  append(result, prefix, 'open_forest_deciduous_broadleaf', openForestDeciduousBroadleaf, totalLandCoverArea);
-  append(result, prefix, 'open_forest_forest_mixed', openForestMixed, totalLandCoverArea);
-  append(result, prefix, 'open_forest_forest_other', openForestOther, totalLandCoverArea);
-  append(result, prefix, 'open_forest_forest_total', openForestTotal, totalLandCoverArea);
+  result = append(result, prefix, 'open_forest_evergreen_needle', openForestEvergreenNeedle, totalLandCoverArea);
+  result = append(result, prefix, 'open_forest_evergreen_broadleaf', openForestEvergreenBroadleaf, totalLandCoverArea);
+  result = append(result, prefix, 'open_forest_deciduous_needle', openForestDeciduousNeedle, totalLandCoverArea);
+  result = append(result, prefix, 'open_forest_deciduous_broadleaf', openForestDeciduousBroadleaf, totalLandCoverArea);
+  result = append(result, prefix, 'open_forest_forest_mixed', openForestMixed, totalLandCoverArea);
+  result = append(result, prefix, 'open_forest_forest_other', openForestOther, totalLandCoverArea);
+  result = append(result, prefix, 'open_forest_forest_total', openForestTotal, totalLandCoverArea);
   
-  append(result, prefix, 'shrubs', getLandcover(discrete, '20'), totalLandCoverArea);
-  append(result, prefix, 'ocean', getLandcover(discrete, '200'), totalLandCoverArea);
-  append(result, prefix, 'herbaceous_vegetation', getLandcover(discrete, '30'), totalLandCoverArea);
-  append(result, prefix, 'cultivated', getLandcover(discrete, '40'), totalLandCoverArea);
-  append(result, prefix, 'urban', getLandcover(discrete, '50'), totalLandCoverArea);
-  append(result, prefix, 'bare', getLandcover(discrete, '60'), totalLandCoverArea);
-  append(result, prefix, 'snow', getLandcover(discrete, '70'), totalLandCoverArea);
-  append(result, prefix, 'permanent_water', getLandcover(discrete, '80'), totalLandCoverArea);
-  append(result, prefix, 'herbaceous_wetland', getLandcover(discrete, '90'), totalLandCoverArea);
+  result = append(result, prefix, 'shrubs', getLandcover(discrete, '20'), totalLandCoverArea);
+  result = append(result, prefix, 'ocean', getLandcover(discrete, '200'), totalLandCoverArea);
+  result = append(result, prefix, 'herbaceous_vegetation', getLandcover(discrete, '30'), totalLandCoverArea);
+  result = append(result, prefix, 'cultivated', getLandcover(discrete, '40'), totalLandCoverArea);
+  result = append(result, prefix, 'urban', getLandcover(discrete, '50'), totalLandCoverArea);
+  result = append(result, prefix, 'bare', getLandcover(discrete, '60'), totalLandCoverArea);
+  result = append(result, prefix, 'snow', getLandcover(discrete, '70'), totalLandCoverArea);
+  result = append(result, prefix, 'permanent_water', getLandcover(discrete, '80'), totalLandCoverArea);
+  result = append(result, prefix, 'herbaceous_wetland', getLandcover(discrete, '90'), totalLandCoverArea);
  
-  appendNumber(result, prefix, '_calcuated_area', area.divide(10000));
-  appendNumber(result, prefix, '_lc_area', totalLandCoverArea);
+  result = appendNumber(result, prefix, '_calcuated_area', area.divide(10000));
+  result = appendNumber(result, prefix, '_lc_area', totalLandCoverArea);
   
   return result;
 }
