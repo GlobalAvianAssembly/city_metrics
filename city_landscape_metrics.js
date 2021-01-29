@@ -13,7 +13,7 @@ var stats = cities.map(function(feature) {
   var frequency_region = LandCoverage.coverage(buffer, 300000000);
   
   return ee.Feature(
-    polygon, 
+    null, 
     LandCoverage.metrics('city', frequency_city, polygon.area())
     .combine(LandCoverage.metrics('region', frequency_region, buffer.area()))
   )
