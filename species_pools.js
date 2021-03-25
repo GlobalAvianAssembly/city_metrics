@@ -28,4 +28,4 @@ Export.table.toCloudStorage({
 });
 
 // Print the result.
-print(spatialJoined);
+//print(spatialJoined);
