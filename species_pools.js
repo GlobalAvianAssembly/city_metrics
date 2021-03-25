@@ -20,5 +20,12 @@ var distSaveAll = ee.Join.saveAll({
 // Apply the join.
 var spatialJoined = distSaveAll.apply(urban_areas, all_species, distFilter);
 
+Export.table.toCloudStorage({
+  collection: spatialJoined,
+  description: 'Export-regional-species-pool',
+  fileNamePrefix: 'regional-species-pool',
+  bucket:'urban_ebird'
+});
+
 // Print the result.
 print(spatialJoined);
