@@ -20,16 +20,16 @@ var species_subset = all_species.filterMetadata("binomial", "starts_with", "S");
 
 var intersectJoined = saveAllJoin.apply(urban_areas_subset, species_subset, spatialFilter);
 
-
 print(intersectJoined)
 
 // Return list of species per urban area
-species_in_cities = intersectJoined.map(function(urban_area) {
+var species_in_cities = intersectJoined.map(function(urban_area) {
   return ee.List(urban_area.get('species'))
-    .map(function(s) {
+    .map(function(species_area) {
+      var species_area_f = ee.Feature(species_area);
       return new ee.Dictionary()
         .set('city_name', urban_area.get('NAME_MAIN'))
-        .set('species', s.get('binomial'));
+        .set('species', species_area_f.get('binomial'));
     });
 });
 
