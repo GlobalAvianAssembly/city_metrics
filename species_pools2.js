@@ -15,7 +15,9 @@ var saveAllJoin = ee.Join.saveAll({
 });
 
 // Apply the join.
-var intersectJoined = saveAllJoin.apply(states, all_species, urban_areas);
+var intersectJoined = saveAllJoin.apply(urban_areas, all_species, spatialFilter);
+
+print(intersectJoined)
 
 // Return list of species per urban area
 intersectJoined = intersectJoined.map(function(urban_area) {
