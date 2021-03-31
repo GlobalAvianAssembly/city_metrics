@@ -40,7 +40,7 @@ var species_in_cities = intersectJoined.map(function(urban_area) {
 
 // export to cloud
 Export.table.toCloudStorage({
-  collection: species_in_cities,
+  collection: species_in_cities.flatten(),
   description: 'Export-regional-species-pool',
   fileNamePrefix: 'regional-species-pool',
   bucket:'urban_ebird'
