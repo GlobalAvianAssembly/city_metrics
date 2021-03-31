@@ -33,7 +33,7 @@ intersectJoined = intersectJoined.map(function(urban_area) {
   var species = ee.List(urban_area.get('species'))
     .map(function(s) {
       return ee.feature(s.geometry(), new ee.Dictionary()
-        .set('city_name', urban_area.get('NAME_MAIN')),
+        .set('city_name', urban_area.get('NAME_MAIN'))
         .set('species', s.get('binomial'));
     });
   // Return the state feature with a new property: power plant count.
