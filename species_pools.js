@@ -3,9 +3,9 @@ var all_species = ee.FeatureCollection("users/jamesr/AllSpeciesClippedToUrbanAre
     urban_areas = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
-// Define a spatial filter, with distance 100 km.
+// Define a spatial filter, with distance 0 km.
 var distFilter = ee.Filter.withinDistance({
-  distance: 1000,
+  distance: 0,
   leftField: '.geo',
   rightField: '.geo',
   maxError: 10
