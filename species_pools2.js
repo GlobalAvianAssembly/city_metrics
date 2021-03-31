@@ -15,7 +15,10 @@ var saveAllJoin = ee.Join.saveAll({
 });
 
 // Apply the join.
-var intersectJoined = saveAllJoin.apply(urban_areas, all_species, spatialFilter);
+var urban_areas_subset = urban_areas.filterMetadata("NAME_MAIN", "starts_with", "A");
+var species_subset = urban_areas.filterMetadata("binomial", "starts_with", "S");
+
+var intersectJoined = saveAllJoin.apply(urban_areas_subset, species_subset, spatialFilter);
 
 print(intersectJoined)
 
