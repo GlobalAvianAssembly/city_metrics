@@ -15,10 +15,10 @@ var saveAllJoin = ee.Join.saveAll({
 });
 
 // Apply the join.
-var urban_areas_subset = urban_areas.filterMetadata("NAME_MAIN", "starts_with", "M");
-var species_subset = all_species.filterMetadata("binomial", "starts_with", "S");
+//var urban_areas_subset = urban_areas.filterMetadata("NAME_MAIN", "starts_with", "M");
+//var species_subset = all_species.filterMetadata("binomial", "starts_with", "S");
 
-var intersectJoined = saveAllJoin.apply(urban_areas_subset, species_subset, spatialFilter);
+var intersectJoined = saveAllJoin.apply(urban_areas, all_species, spatialFilter);
 
 // Return list of species per urban area
 var species_in_cities = intersectJoined.map(function(urban_area) {
@@ -38,4 +38,10 @@ var species_in_cities = intersectJoined.map(function(urban_area) {
   return ee.FeatureCollection(species_in_city);
 });
 
-print(species_in_cities.flatten())
+// export to cloud
+Export.table.toCloudStorage({
+  collection: species_in_cities,
+  description: 'Export-regional-species-pool',
+  fileNamePrefix: 'regional-species-pool',
+  bucket:'urban_ebird'
+});
