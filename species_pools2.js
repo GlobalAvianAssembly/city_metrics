@@ -32,10 +32,10 @@ intersectJoined = intersectJoined.map(function(urban_area) {
   // Get "power_plant" intersection list, count how many intersected this state.
   var species = ee.List(urban_area.get('species'))
     .map(function(s) {
-      return ee.feature(s.geometry(), ee.Dictionary(
+      return ee.feature(s.geometry(), ee.Dictionary({
         'city_name', urban_area.get('NAME_MAIN'),
         'species', s.get('binomial')
-        ))
+        }))
     });
   // Return the state feature with a new property: power plant count.
   return ee.FeatureCollection(species);
