@@ -35,4 +35,13 @@ var withNearestDist = hasNearest.map(function(f) {
   return f.set('nearestDist', nearestDist);
 });
 
+// export to cloud
+Export.table.toCloudStorage({
+  collection: withNearestDist,
+  description: 'Export-urban-area-to-coastline',
+  fileNamePrefix: 'ee-urban-area-distance-to-coastline',
+  bucket:'urban_ebird'
+});
+
+
 print(withNearestDist)
