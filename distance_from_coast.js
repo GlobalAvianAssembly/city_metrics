@@ -36,5 +36,3 @@ var withNearestDist = hasNearest.map(function(f) {
 });
 
 print(withNearestDist)
-
-print(cities.distance(coastline))
