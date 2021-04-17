@@ -4,7 +4,7 @@ var coastline = ee.FeatureCollection("users/jamesr/GSHHS_l_L1_Coastline"),
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
 var spatialFilter = ee.Filter.withinDistance({
-  distance: 500000,
+  distance: 5000000,
   leftField: '.geo',
   rightField: '.geo',
   maxError: 10
@@ -23,8 +23,8 @@ var joined = ee.Join.saveAll({
 
 var hasNearest = joined.map(function(f) {
   var neighsSize = ee.List(f.get('neighbors')).size();
-  return f.set('neighsSize', neighsSize);
-}).filter(ee.Filter.gt('neighsSize', 1));
+  return f.set('numberOfNeighbours', neighsSize);
+}).filter(ee.Filter.gt('numberOfNeighbours', 1));
 
 Map.addLayer(hasNearest, {color: 'red'}, 'hasNearest');
 
@@ -32,7 +32,7 @@ Map.addLayer(hasNearest, {color: 'red'}, 'hasNearest');
 var withNearestDist = hasNearest.map(function(f) {
   var nearestDist = ee.Feature(ee.List(f.get('neighbors')).get(1))
     .get('distance');
-  return f.set('nearestDist', nearestDist);
+  return f.set('nearestDistanceToNeighbour', nearestDist);
 });
 
 // export to cloud
