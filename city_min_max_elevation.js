@@ -6,7 +6,7 @@ var cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million"),
 var elevations = cities.map(function(feature) {
   var polygon = feature.geometry();
   
-  discrete = elevation.reduceRegion({
+  var discrete = elevation.reduceRegion({
     reducer: ee.Reducer.frequencyHistogram(),
     geometry: polygon,
     scale: 100,
