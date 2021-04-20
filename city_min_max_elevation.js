@@ -10,17 +10,15 @@ var elevations = cities.map(function(feature) {
     reducer: ee.Reducer.frequencyHistogram(),
     geometry: polygon,
     scale: 100,
-    maxPixels: maxPixels
+    maxPixels: 15000000
   });
   
   var maxElevation = ee.Number(discrete.values().reduce(ee.Reducer.max()));
-  
-  var frequency_city = LandCoverage.coverage(polygon, 15000000);
-  
-  var buffer = polygon.buffer(100000).difference(polygon);
-  var frequency_region = LandCoverage.coverage(buffer, 300000000);
+  var minElevation = ee.Number(discrete.values().reduce(ee.Reducer.min()));
   
   return feature
     .set('min_elevation', feature.get('NAME_MAIN'))
     .set('max_elevation', feature.get('POP_2015'));
 });
+
+Map.addLayer(elevation);
