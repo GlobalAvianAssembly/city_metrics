@@ -19,5 +19,5 @@ var elevations = cities.map(function(feature) {
     .set('elevation', minMaxElevation)
 });
 
-Map.addLayer(elevation);
-Map.addLayer(elevations);
+
+Map.addLayer(elevation.reduceRegions(cities, ee.Reducer.minMax()));
