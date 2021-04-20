@@ -17,8 +17,9 @@ var elevations = cities.map(function(feature) {
   var minElevation = ee.Number(discrete.values().reduce(ee.Reducer.min()));
   
   return feature
-    .set('min_elevation', feature.get('NAME_MAIN'))
-    .set('max_elevation', feature.get('POP_2015'));
+    .set('min_elevation', minElevation)
+    .set('max_elevation', maxElevation);
 });
 
 Map.addLayer(elevation);
+Map.addLayer(elevations);
