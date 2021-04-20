@@ -13,12 +13,10 @@ var elevations = cities.map(function(feature) {
     maxPixels: 15000000
   });
   
-  var maxElevation = ee.Number(discrete.values().reduce(ee.Reducer.max()));
-  var minElevation = ee.Number(discrete.values().reduce(ee.Reducer.min()));
+  var minMaxElevation = ee.Number(discrete.values().reduce(ee.Reducer.minMax()));
   
   return feature
-    .set('min_elevation', minElevation)
-    .set('max_elevation', maxElevation);
+    .set('elevation', minMaxElevation)
 });
 
 Map.addLayer(elevation);
