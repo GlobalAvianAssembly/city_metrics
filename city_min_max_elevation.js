@@ -6,8 +6,14 @@ var cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million"),
 var elevations = cities.map(function(feature) {
   var polygon = feature.geometry();
   
-  var discrete = new ee.Dictionary(frequency.get('discrete_classification'));
-  var totalLandCoverArea = ee.Number(discrete.values().reduce(ee.Reducer.sum()));
+  discrete = elevation.reduceRegion({
+    reducer: ee.Reducer.frequencyHistogram(),
+    geometry: polygon,
+    scale: 100,
+    maxPixels: maxPixels
+  });
+  
+  var maxElevation = ee.Number(discrete.values().reduce(ee.Reducer.max()));
   
   var frequency_city = LandCoverage.coverage(polygon, 15000000);
   
