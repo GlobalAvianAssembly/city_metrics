@@ -3,7 +3,7 @@ var cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million"),
     biome = ee.Image("OpenLandMap/PNV/PNV_BIOME-TYPE_BIOME00K_C/v01");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
-coverage = function(polygon) {
+var coverage = function(polygon) {
   return biome.reduceRegion({
     reducer: ee.Reducer.frequencyHistogram(),
     geometry: polygon,
@@ -17,8 +17,8 @@ var stats = cities.map(function(feature) {
   var frequency_city = coverage(polygon);
   
   return ee.Feature(
-    feature, 
-    new ee.Dictionary().set('coverage', frequency_city)
+    null, 
+    new ee.Dictionary().set('city', feature).set('coverage', frequency_city)
   );
   
 });
