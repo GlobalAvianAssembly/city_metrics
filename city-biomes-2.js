@@ -17,8 +17,8 @@ var stats = cities.map(function(feature) {
   var frequency_city = coverage(polygon);
   
   return ee.Feature(
-    null, 
-    new ee.Dictionary().set('city', feature).set('coverage', frequency_city)
+    feature.geometry(), 
+    new ee.Dictionary().set('city', feature.get('NAME_MAIN')).set('coverage', frequency_city)
   );
   
 });
