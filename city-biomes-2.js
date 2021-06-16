@@ -18,6 +18,7 @@ var stats = cities.map(function(feature) {
   
   return ee.Feature(
     null, 
+    new ee.Dictionary().set('city', frequency_city)
     LandCoverage.metrics('city', frequency_city, ee.Number(polygon.area()))
   )
   .set('coverage', frequency_city));
