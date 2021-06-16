@@ -17,19 +17,18 @@ var stats = cities.map(function(feature) {
   var frequency_city = coverage(polygon);
   
   return ee.Feature(
-    null, 
-    new ee.Dictionary().set('city', frequency_city)
-    LandCoverage.metrics('city', frequency_city, ee.Number(polygon.area()))
-  )
-  .set('coverage', frequency_city));
+    feature, 
+    new ee.Dictionary().set('coverage', frequency_city)
+  );
+  
 });
 
 print(stats);
 
 Export.table.toCloudStorage({
   collection: stats,
-  description: 'Export-city-land-coverage-to-gcs',
-  fileNamePrefix: 'city_copernicus_land_coverage',
+  description: 'Export-city-biome-2',
+  fileNamePrefix: 'city-biome-2',
   bucket:'urban_ebird'
 });
 
