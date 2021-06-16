@@ -18,7 +18,8 @@ var stats = cities.map(function(feature) {
   
   return ee.Feature(
     feature.geometry(), 
-    new ee.Dictionary().set('city', feature.get('NAME_MAIN')).set('coverage', frequency_city)
+    new ee.Dictionary().set('city', feature.get('NAME_MAIN'))
+    .set('biome_type', frequency_city.get('biome_type'))
   );
   
 });
