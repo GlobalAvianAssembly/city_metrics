@@ -2,19 +2,25 @@
 var cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million"),
     biome = ee.Image("OpenLandMap/PNV/PNV_BIOME-TYPE_BIOME00K_C/v01");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
-var LandCoverage = require('users/jamesr/city_metrics:modules/LandCoverage.js');
 
-  
+coverage = function(polygon) {
+  return biome.reduceRegion({
+    reducer: ee.Reducer.frequencyHistogram(),
+    geometry: polygon,
+    scale: 100,
+    maxPixels: 15000000
+  });
+}
+
 var stats = cities.map(function(feature) {
   var polygon = feature.geometry();
-  var frequency_city = LandCoverage.coverage(polygon, 15000000);
+  var frequency_city = coverage(polygon);
   
   return ee.Feature(
     null, 
     LandCoverage.metrics('city', frequency_city, ee.Number(polygon.area()))
   )
-  .set('city_name', feature.get('NAME_MAIN'))
-  .set('pop_2015', feature.get('POP_2015'));
+  .set('coverage', frequency_city));
 });
 
 print(stats);
