@@ -16,8 +16,6 @@ var saveAllJoin = ee.Join.saveAll({
 
 var intersectJoined = saveAllJoin.apply(cities, biomes, spatialFilter);
 
-Map.addLayer(ee.FeatureCollection(intersectJoined.first().get('biomes')))
-
 var result = intersectJoined.map(function(feature) {
   var cityName = feature.get('NAME_MAIN');
   var biomeList = feature.get('biomes');
@@ -25,16 +23,25 @@ var result = intersectJoined.map(function(feature) {
   var biomes = ee.FeatureCollection(biomeList);
   
   return biomes.map(function(biomeFeature) {
-    return biomeFeature.set('CITY_NAME', cityName)
-  }).sort("SHAPE_AREA", false);
+    return ee.Feature(null)
+      .set('CITY_NAME', cityName)
+      .set('BIOME_NAME', biomeFeature.get('BIOME_NAME'))
+      .set('BIOME_NUM', biomeFeature.get('BIOME_NUM'))
+      .set('ECO_ID', biomeFeature.get('ECO_ID'))
+      .set('ECO_NAME', biomeFeature.get('ECO_NAME'))
+      .set('NNH', biomeFeature.get('NNH'))
+      .set('NNH_NAME', biomeFeature.get('NNH_NAME'))
+      .set('REALM', biomeFeature.get('REALM'))
+      .set('SHAPE_AREA', biomeFeature.get('SHAPE_AREA'))
+      .set('SHAPE_LENG', biomeFeature.get('SHAPE_LENG'))
+  })
 }).flatten();
 
 
-var resultFC = ee.FeatureCollection(result);
-Map.addLayer(resultFC)
+print(result)
 
 Export.table.toCloudStorage({
-  collection: resultFC,
+  collection: result,
   description: 'Export-city-biome',
   fileNamePrefix: 'city-biome',
   bucket:'urban_ebird'
