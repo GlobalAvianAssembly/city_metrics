@@ -16,20 +16,25 @@ var saveAllJoin = ee.Join.saveAll({
 
 var intersectJoined = saveAllJoin.apply(cities, biomes, spatialFilter);
 
+Map.addLayer(ee.FeatureCollection(intersectJoined.first().get('biomes')))
+
 var result = intersectJoined.map(function(feature) {
   var cityName = feature.get('NAME_MAIN');
-  var biomes = ee.FeatureCollection(feature.get('biomes'))
+  var biomeList = feature.get('biomes');
+  
+  var biomes = ee.FeatureCollection(biomeList);
+  
   return biomes.map(function(biomeFeature) {
-    return biomeFeature.set('city_name', cityName)
-  });
-}).flatten()
+    return biomeFeature.set('CITY_NAME', cityName)
+  }).sort("SHAPE_AREA", false);
+}).flatten();
 
-print(result.size())
 
-Map.addLayer(result)
+var resultFC = ee.FeatureCollection(result);
+Map.addLayer(resultFC)
 
 Export.table.toCloudStorage({
-  collection: result,
+  collection: resultFC,
   description: 'Export-city-biome',
   fileNamePrefix: 'city-biome',
   bucket:'urban_ebird'
