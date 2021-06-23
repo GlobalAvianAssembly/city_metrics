@@ -8,7 +8,7 @@ var distFilter = ee.Filter.withinDistance({
   distance: 0,
   leftField: '.geo',
   rightField: '.geo',
-  maxError: 10
+  maxError: 5
 });
 
 // Define a saveAll join.
@@ -20,17 +20,17 @@ var distSaveAll = ee.Join.saveAll({
 // Apply the join.
 var spatialJoined = distSaveAll.apply(cities, biomes, distFilter);
 
-Map.addLayer(spatialJoined)
-
 var result = spatialJoined.map(function(feature) {
   var cityName = feature.get('NAME_MAIN');
-  var biomes = feature.get('points')
+  var biomes = ee.FeatureCollection(feature.get('points'))
   return biomes.map(function(biomeFeature) {
     return biomeFeature.set('city_name', cityName)
   });
 }).flatten()
 
-print(result)
+print(result.size())
+
+Map.addLayer(result)
 
 Export.table.toCloudStorage({
   collection: spatialJoined,
