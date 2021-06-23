@@ -29,7 +29,7 @@ print(result.size())
 Map.addLayer(result)
 
 Export.table.toCloudStorage({
-  collection: spatialJoined,
+  collection: result,
   description: 'Export-city-biome',
   fileNamePrefix: 'city-biome',
   bucket:'urban_ebird'
