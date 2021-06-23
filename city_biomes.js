@@ -20,6 +20,8 @@ var distSaveAll = ee.Join.saveAll({
 // Apply the join.
 var spatialJoined = distSaveAll.apply(cities, biomes, distFilter);
 
+Map.addLayer(spatialJoined)
+
 var result = spatialJoined.map(function(feature) {
   var cityName = feature.get('NAME_MAIN');
   var biomes = feature.get('points')
@@ -37,5 +39,3 @@ Export.table.toCloudStorage({
   bucket:'urban_ebird'
 });
 
-
-Map.addLayer(spatialJoined)
