@@ -20,9 +20,12 @@ var distSaveAll = ee.Join.saveAll({
 // Apply the join.
 var spatialJoined = distSaveAll.apply(cities, biomes, distFilter);
 
-var result = spatialJoined.reduce(function(feature) {
-  
-})
+var result = spatialJoined.map(function(feature) {
+  var cityName = feature.get('NAME_MAIN');
+  return feature.points.set('city_name', cityName);
+}).flatten()
+
+print(result)
 
 Export.table.toCloudStorage({
   collection: spatialJoined,
