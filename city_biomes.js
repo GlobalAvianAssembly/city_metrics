@@ -22,7 +22,10 @@ var spatialJoined = distSaveAll.apply(cities, biomes, distFilter);
 
 var result = spatialJoined.map(function(feature) {
   var cityName = feature.get('NAME_MAIN');
-  return feature.points.set('city_name', cityName);
+  var biomes = feature.get('points')
+  return biomes.map(function(biomeFeature) {
+    return biomeFeature.set('city_name', cityName)
+  });
 }).flatten()
 
 print(result)
