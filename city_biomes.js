@@ -11,7 +11,7 @@ var spatialFilter = ee.Filter.intersects({
 
 // Define a save all join.
 var saveAllJoin = ee.Join.saveAll({
-  matchesKey: 'species',
+  matchesKey: 'biomes',
 });
 
 // Apply the join.
@@ -22,7 +22,7 @@ var intersectJoined = saveAllJoin.apply(cities, biomes, spatialFilter);
 
 var result = spatialJoined.map(function(feature) {
   var cityName = feature.get('NAME_MAIN');
-  var biomes = ee.FeatureCollection(feature.get('points'))
+  var biomes = ee.FeatureCollection(feature.get('biomes'))
   return biomes.map(function(biomeFeature) {
     return biomeFeature.set('city_name', cityName)
   });
