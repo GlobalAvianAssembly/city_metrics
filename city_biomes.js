@@ -14,10 +14,6 @@ var saveAllJoin = ee.Join.saveAll({
   matchesKey: 'biomes',
 });
 
-// Apply the join.
-//var urban_areas_subset = urban_areas.filterMetadata("NAME_MAIN", "starts_with", "M");
-//var species_subset = all_species.filterMetadata("binomial", "starts_with", "S");
-
 var intersectJoined = saveAllJoin.apply(cities, biomes, spatialFilter);
 
 var result = spatialJoined.map(function(feature) {
