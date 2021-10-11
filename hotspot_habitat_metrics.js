@@ -1,6 +1,7 @@
 /**** Start of imports. If edited, may not auto-convert in the playground. ****/
 var hotspots = ee.FeatureCollection("users/jamesr/UrbanHotspots"),
-    populationDensity = ee.Image("users/jamesr/GHS_POP_E2015_GLOBE_R2019A_54009_250_V1_0");
+    populationDensity = ee.Image("users/jamesr/GHS_POP_E2015_GLOBE_R2019A_54009_250_V1_0"),
+    elevationRaster = ee.Image("users/jamesr/world_digital_elevation_model");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
 var LandCoverage = require('users/jamesr/city_metrics:modules/LandCoverage.js');
@@ -26,6 +27,21 @@ function metricsForBuffer(point, bufferSize, prefix) {
   var frequency = LandCoverage.coverage(buffer, bufferSize * 1000);
   return LandCoverage.metrics(prefix, frequency, buffer.area())
     .set(prefix + '_avg_pop_density', averagePopulationDensity(buffer));
+}
+
+function averageElevation(polygon) {
+  var result = elevationRaster.reduceRegion({
+    reducer: ee.Reducer.mean(),
+    geometry: polygon,
+    scale: 100,
+    maxPixels: 1e9
+  }).get('b1');
+  
+  return ee.Algorithms.If({
+    condition: result,
+    trueCase: result,
+    falseCase: 0
+  });
 }
 
 var updated = hotspots.map(function(feature) {
