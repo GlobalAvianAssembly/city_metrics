@@ -28,7 +28,7 @@ function averageElevation(polygon) {
     geometry: polygon,
     scale: 100,
     maxPixels: 1e9
-  });
+  }).get('b1');
 }
 
 function minMaxElevation(polygon) {
@@ -43,10 +43,13 @@ function minMaxElevation(polygon) {
 function metricsForBuffer(point, bufferSize, prefix) {
   var buffer = point.buffer(bufferSize);
   var frequency = LandCoverage.coverage(buffer, bufferSize * 1000);
+  var elevationMinMax = minMaxElevation(buffer);
+  
   return LandCoverage.metrics(prefix, frequency, buffer.area())
     .set(prefix + '_avg_pop_density', averagePopulationDensity(buffer))
     .set(prefix + '_average_elevation', averageElevation(buffer))
-    .set(prefix + '_min_max_elevation', minMaxElevation(buffer));
+    .set(prefix + '_min_elevation', elevationMinMax.get('b1_min'))
+    .set(prefix + '_max_elevation', elevationMinMax.get('b1_max'));
 }
 
 
@@ -76,4 +79,7 @@ Export.table.toCloudStorage({
   bucket:'urban_ebird'
 });
 
-Map.addLayer(updated);
+print(minMaxElevation(hotspots.first().geometry().buffer(5000)));
+Map.addLayer(metricsForBuffer(hotspots.first().geometry()), 5000, 'b5k');
+
+// Map.addLayer(updated);
