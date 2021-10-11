@@ -52,8 +52,7 @@ function metricsForBuffer(point, bufferSize, prefix) {
     .set(prefix + '_max_elevation', elevationMinMax.get('b1_max'));
 }
 
-
-var updated = hotspots.map(function(feature) {
+function toBufferedFeature(feature) {
   var point = feature.geometry();
   
   return ee.Feature(
@@ -70,6 +69,11 @@ var updated = hotspots.map(function(feature) {
       .set('elevation', feature.get('ELEVATION'))
       .set('latitude', feature.get('lat'))
   );
+}
+
+
+var updated = hotspots.map(function(feature) {
+  return toBufferedFeature(feature);
 });
 
 Export.table.toCloudStorage({
@@ -79,7 +83,4 @@ Export.table.toCloudStorage({
   bucket:'urban_ebird'
 });
 
-print(minMaxElevation(hotspots.first().geometry().buffer(5000)));
-Map.addLayer(metricsForBuffer(hotspots.first().geometry()), 5000, 'b5k');
-
-// Map.addLayer(updated);
+Map.addLayer(updated);
