@@ -22,13 +22,6 @@ function averagePopulationDensity(polygon) {
   });
 }
 
-function metricsForBuffer(point, bufferSize, prefix) {
-  var buffer = point.buffer(bufferSize);
-  var frequency = LandCoverage.coverage(buffer, bufferSize * 1000);
-  return LandCoverage.metrics(prefix, frequency, buffer.area())
-    .set(prefix + '_avg_pop_density', averagePopulationDensity(buffer));
-}
-
 function averageElevation(polygon) {
   var result = elevationRaster.reduceRegion({
     reducer: ee.Reducer.mean(),
@@ -43,6 +36,15 @@ function averageElevation(polygon) {
     falseCase: 0
   });
 }
+
+function metricsForBuffer(point, bufferSize, prefix) {
+  var buffer = point.buffer(bufferSize);
+  var frequency = LandCoverage.coverage(buffer, bufferSize * 1000);
+  return LandCoverage.metrics(prefix, frequency, buffer.area())
+    .set(prefix + '_avg_pop_density', averagePopulationDensity(buffer))
+    .set(prefix + '_average_elevation', averageElevation(buffer));
+}
+
 
 var updated = hotspots.map(function(feature) {
   var point = feature.geometry();
