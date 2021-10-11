@@ -23,17 +23,20 @@ function averagePopulationDensity(polygon) {
 }
 
 function averageElevation(polygon) {
-  var result = elevationRaster.reduceRegion({
+  return elevationRaster.reduceRegion({
     reducer: ee.Reducer.mean(),
     geometry: polygon,
     scale: 100,
     maxPixels: 1e9
-  }).get('b1');
-  
-  return ee.Algorithms.If({
-    condition: result,
-    trueCase: result,
-    falseCase: 0
+  });
+}
+
+function minMaxElevation(polygon) {
+  return elevationRaster.reduceRegion({
+    reducer: ee.Reducer.minMax(),
+    geometry: polygon,
+    scale: 100,
+    maxPixels: 1e9
   });
 }
 
@@ -42,7 +45,8 @@ function metricsForBuffer(point, bufferSize, prefix) {
   var frequency = LandCoverage.coverage(buffer, bufferSize * 1000);
   return LandCoverage.metrics(prefix, frequency, buffer.area())
     .set(prefix + '_avg_pop_density', averagePopulationDensity(buffer))
-    .set(prefix + '_average_elevation', averageElevation(buffer));
+    .set(prefix + '_average_elevation', averageElevation(buffer))
+    .set(prefix + '_min_max_elevation', minMaxElevation(buffer));
 }
 
 
