@@ -2,4 +2,15 @@
 var resolve = ee.FeatureCollection("RESOLVE/ECOREGIONS/2017");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
-Map.addLayer(resolve)
+var filter = ee.Filter.equals({
+  leftField: 'REALM',
+  rightField: 'REALM'
+});
+
+var innerJoin = ee.Join.inner('resolve1', 'resolve2');
+
+// Apply the join.
+var joined = innerJoin.apply(resolve, resolve, filter);
+
+
+Map.addLayer(joined)
