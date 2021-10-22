@@ -1,0 +1,5 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var resolve = ee.FeatureCollection("RESOLVE/ECOREGIONS/2017");
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+
+Map.addLayer(resolve)
