@@ -9,4 +9,4 @@ Export.table.toCloudStorage({
   bucket:'urban_ebird'
 });
 
-Map.addLayer(stats);
+Map.addLayer(resolve);
