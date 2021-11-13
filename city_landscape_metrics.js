@@ -1,6 +1,7 @@
 /**** Start of imports. If edited, may not auto-convert in the playground. ****/
 var cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million"),
-    elevationRaster = ee.Image("users/jamesr/world_digital_elevation_model");
+    elevationRaster = ee.Image("users/jamesr/world_digital_elevation_model"),
+    estuaries = ee.FeatureCollection("users/jamesr/14_001_UBC003_SAU_Estuaries2003_v2");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
 var LandCoverage = require('users/jamesr/city_metrics:modules/LandCoverage.js');
@@ -22,6 +23,10 @@ function minMaxElevation(polygon) {
     maxPixels: 1e9
   });
 }
+
+function areaCoveredbyEstuaries(polygon) {
+  return polygon.intersection(estuaries).area()
+}
   
 var stats = cities.map(function(feature) {
   var polygon = feature.geometry();
@@ -41,15 +46,15 @@ var stats = cities.map(function(feature) {
   .set('city_average_elevation', averageElevation(polygon))
   .set('city_min_elevation', elevationMinMax_city.get('b1_min'))
   .set('city_max_elevation', elevationMinMax_city.get('b1_max'))
+  .set('city_estuary_area', areaCoveredbyEstuaries(polygon))
   .set('region_average_elevation', averageElevation(buffer))
   .set('region_min_elevation', elevationMinMax_region.get('b1_min'))
   .set('region_max_elevation', elevationMinMax_region.get('b1_max'))
+  .set('region_estuary_area', areaCoveredbyEstuaries(buffer))
   .set('city_name', feature.get('NAME_MAIN'))
   .set('pop_2015', feature.get('POP_2015'));
 });
 
-
-print(stats);
 
 Export.table.toCloudStorage({
   collection: stats,
