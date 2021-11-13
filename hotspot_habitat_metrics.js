@@ -6,6 +6,10 @@ var hotspots = ee.FeatureCollection("users/jamesr/UrbanHotspots"),
 
 var LandCoverage = require('users/jamesr/city_metrics:modules/LandCoverage.js');
 
+function aboveZero(x) {
+  return ee.Number(x).min(0);
+}
+
 function averagePopulationDensity(polygon) {
   
   var result = populationDensity.reduceRegion({
@@ -23,12 +27,12 @@ function averagePopulationDensity(polygon) {
 }
 
 function averageElevation(polygon) {
-  return elevationRaster.reduceRegion({
+  return aboveZero(elevationRaster.reduceRegion({
     reducer: ee.Reducer.mean(),
     geometry: polygon,
     scale: 100,
     maxPixels: 1e9
-  }).get('b1');
+  }).get('b1'));
 }
 
 function minMaxElevation(polygon) {
@@ -48,8 +52,8 @@ function metricsForBuffer(point, bufferSize, prefix) {
   return LandCoverage.metrics(prefix, frequency, buffer.area())
     .set(prefix + '_avg_pop_density', averagePopulationDensity(buffer))
     .set(prefix + '_average_elevation', averageElevation(buffer))
-    .set(prefix + '_min_elevation', elevationMinMax.get('b1_min'))
-    .set(prefix + '_max_elevation', elevationMinMax.get('b1_max'));
+    .set(prefix + '_min_elevation', aboveZero(elevationMinMax.get('b1_min')))
+    .set(prefix + '_max_elevation', aboveZero(elevationMinMax.get('b1_max')));
 }
 
 function toBufferedFeature(feature) {
