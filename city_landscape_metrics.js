@@ -1,9 +1,27 @@
 /**** Start of imports. If edited, may not auto-convert in the playground. ****/
-var cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million");
+var cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million"),
+    elevationRaster = ee.Image("users/jamesr/world_digital_elevation_model");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
 var LandCoverage = require('users/jamesr/city_metrics:modules/LandCoverage.js');
 
+function averageElevation(polygon) {
+  return elevationRaster.reduceRegion({
+    reducer: ee.Reducer.mean(),
+    geometry: polygon,
+    scale: 100,
+    maxPixels: 1e9
+  }).get('b1');
+}
+
+function minMaxElevation(polygon) {
+  return elevationRaster.reduceRegion({
+    reducer: ee.Reducer.minMax(),
+    geometry: polygon,
+    scale: 100,
+    maxPixels: 1e9
+  });
+}
   
 var stats = cities.map(function(feature) {
   var polygon = feature.geometry();
@@ -12,14 +30,24 @@ var stats = cities.map(function(feature) {
   var buffer = polygon.buffer(100000).difference(polygon);
   var frequency_region = LandCoverage.coverage(buffer, 300000000);
   
+  var elevationMinMax_city = minMaxElevation(polygon);
+  var elevationMinMax_region = minMaxElevation(buffer);
+  
   return ee.Feature(
     null, 
     LandCoverage.metrics('city', frequency_city, ee.Number(polygon.area()))
     .combine(LandCoverage.metrics('region', frequency_region, ee.Number(buffer.area())))
   )
+  .set('city_average_elevation', averageElevation(polygon))
+  .set('city_min_elevation', elevationMinMax_city.get('b1_min'))
+  .set('city_max_elevation', elevationMinMax_city.get('b1_max'))
+  .set('region_average_elevation', averageElevation(buffer))
+  .set('region_min_elevation', elevationMinMax_region.get('b1_min'))
+  .set('region_max_elevation', elevationMinMax_region.get('b1_max'))
   .set('city_name', feature.get('NAME_MAIN'))
   .set('pop_2015', feature.get('POP_2015'));
 });
+
 
 print(stats);
 
