@@ -7,7 +7,7 @@ var cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million"),
 var LandCoverage = require('users/jamesr/city_metrics:modules/LandCoverage.js');
 
 function aboveZero(x) {
-  return ee.Number(x).min(0);
+  return ee.Number(x).max(0);
 }
 
 function averageElevation(polygon) {
