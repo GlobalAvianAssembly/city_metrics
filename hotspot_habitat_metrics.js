@@ -7,7 +7,7 @@ var hotspots = ee.FeatureCollection("users/jamesr/UrbanHotspots"),
 var LandCoverage = require('users/jamesr/city_metrics:modules/LandCoverage.js');
 
 function aboveZero(x) {
-  return ee.Number(x).min(0);
+  return ee.Number(x).max(0);
 }
 
 function averagePopulationDensity(polygon) {
