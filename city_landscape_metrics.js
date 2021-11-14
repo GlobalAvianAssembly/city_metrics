@@ -29,7 +29,7 @@ function minMaxElevation(polygon) {
 }
 
 function areaCoveredbyEstuaries(polygon) {
-  return polygon.intersection(estuaries).area()
+  return polygon.intersection(estuaries).area().divide(10000)
 }
   
 var stats = cities.map(function(feature) {
