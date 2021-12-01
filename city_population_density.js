@@ -9,19 +9,12 @@ function aboveZero(x) {
 }
 
 function averagePopulationDensity(polygon) {
-  
-  var result = populationDensity.reduceRegion({
+  return aboveZero(populationDensity.reduceRegion({
     reducer: ee.Reducer.mean(),
     geometry: polygon,
     scale: 100,
     maxPixels: 1e9
-  }).get('b1');
-  
-  return ee.Algorithms.If({
-    condition: result,
-    trueCase: result,
-    falseCase: 0
-  });
+  }).get('b1'));
 }
 
 function minMaxPopulationDensity(polygon) {
