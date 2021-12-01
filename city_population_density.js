@@ -42,6 +42,7 @@ var stats = cities.map(function(feature) {
   
   return ee.Feature(
     null, 
+    new ee.Dictionary()
   )
   .set('city_average_pop_dens', averagePopulationDensity(polygon))
   .set('city_min_pop_dens', aboveZero(popDensMinMax_city.get('b1_min')))
