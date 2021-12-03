@@ -28,10 +28,14 @@ function minMaxPopulationDensity(polygon) {
 
 var stats = cities.map(function(feature) {
   var polygon = feature.geometry();
-  var buffer = polygon.buffer(100000).difference(polygon);
+  var buffer_20k = polygon.buffer(20000).difference(polygon);
+  var buffer_50k = polygon.buffer(50000).difference(polygon);
+  var buffer_100k = polygon.buffer(100000).difference(polygon);
   
   var popDensMinMax_city = minMaxPopulationDensity(polygon);
-  var popDensMinMax_region = minMaxPopulationDensity(buffer);
+  var popDensMinMax_region20k = minMaxPopulationDensity(buffer_20k);
+  var popDensMinMax_region50k = minMaxPopulationDensity(buffer_50k);
+  var popDensMinMax_region100k = minMaxPopulationDensity(buffer_100k);
   
   return ee.Feature(
     null, 
@@ -40,9 +44,15 @@ var stats = cities.map(function(feature) {
   .set('city_average_pop_dens', averagePopulationDensity(polygon))
   .set('city_min_pop_dens', aboveZero(popDensMinMax_city.get('b1_min')))
   .set('city_max_pop_dens', aboveZero(popDensMinMax_city.get('b1_max')))
-  .set('region_average_pop_dens', averagePopulationDensity(buffer).min(0))
-  .set('region_min_pop_dens', aboveZero(popDensMinMax_region.get('b1_min')))
-  .set('region_max_pop_dens', aboveZero(popDensMinMax_region.get('b1_max')))
+  .set('region_20_average_pop_dens', averagePopulationDensity(buffer_20k))
+  .set('region_20_min_pop_dens', aboveZero(popDensMinMax_region20k.get('b1_min')))
+  .set('region_20_max_pop_dens', aboveZero(popDensMinMax_region20k.get('b1_max')))
+  .set('region_50_average_pop_dens', averagePopulationDensity(buffer_50k))
+  .set('region_50_min_pop_dens', aboveZero(popDensMinMax_region50k.get('b1_min')))
+  .set('region_50_max_pop_dens', aboveZero(popDensMinMax_region50k.get('b1_max')))
+  .set('region_100_average_pop_dens', averagePopulationDensity(buffer_100k))
+  .set('region_100_min_pop_dens', aboveZero(popDensMinMax_region100k.get('b1_min')))
+  .set('region_100_max_pop_dens', aboveZero(popDensMinMax_region100k.get('b1_max')))
   .set('city_name', feature.get('NAME_MAIN'));
 });
 
@@ -54,4 +64,7 @@ Export.table.toCloudStorage({
   bucket:'urban_ebird'
 });
 
-Map.addLayer(stats);
+var viz = {palette: ['00FFFF', '0000FF'], opacity: 0.8, min: 1000, bands: ['b1']};
+
+Map.addLayer(populationDensity, viz);
+Map.addLayer(cities, {opacity: 0.3})
