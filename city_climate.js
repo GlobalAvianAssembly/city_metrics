@@ -8,14 +8,41 @@ function aboveZero(x) {
   return ee.Number(x).max(0);
 }
 
-function averagePopulationDensity(polygon) {
-  return aboveZero(populationDensity.reduceRegion({
+function averageClimate(polygon) {
+  return populationDensity.reduceRegion({
     reducer: ee.Reducer.mean(),
     geometry: polygon,
     scale: 100,
     maxPixels: 1e9
-  }).get('b1'));
+  });
 }
+
+var stats = cities.map(function(feature) {
+  var polygon = feature.geometry();
+  
+  var city_climate = averageClimate(polygon);
+  
+  return ee.Feature(
+    null, 
+    new ee.Dictionary()
+  )
+  .set('city_rainfall_average_annual', city_climate.get('bio12'))
+  .set('city_rainfall_average_max_monthly', city_climate.get('bio13'))
+  .set('city_rainfall_average_min_monthly', city_climate.get('bio14'))
+  .set('city_temperature_average_annual', city_climate.get('bio01'))
+  .set('city_temperature_average_max_monthly', city_climate.get('bio05'))
+  .set('city_temperature_average_min_monthly', city_climate.get('bio06'))
+  .set('city_temperature_average_range_monthly', city_climate.get('bio07'))
+  .set('city_name', feature.get('NAME_MAIN'));
+});
+
+
+Export.table.toCloudStorage({
+  collection: stats,
+  description: 'Export-city-climate-to-gcs',
+  fileNamePrefix: 'city_climate',
+  bucket:'urban_ebird'
+});
 
 var viz = {opacity: 0.5};
 
