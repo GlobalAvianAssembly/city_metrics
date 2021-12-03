@@ -9,7 +9,7 @@ function aboveZero(x) {
 }
 
 function averageClimate(polygon) {
-  return populationDensity.reduceRegion({
+  return climate.reduceRegion({
     reducer: ee.Reducer.mean(),
     geometry: polygon,
     scale: 100,
@@ -47,4 +47,4 @@ Export.table.toCloudStorage({
 var viz = {opacity: 0.5};
 
 Map.addLayer(climate, viz);
-Map.addLayer(cities, {opacity: 0.3})
+Map.addLayer(stats, {opacity: 0.3})
