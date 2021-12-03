@@ -41,7 +41,9 @@ var stats = cities.map(function(feature) {
   var buffer_50k = polygon.buffer(50000).difference(polygon);
   var buffer_100k = polygon.buffer(100000).difference(polygon);
   
-  var frequency_region = LandCoverage.coverage(buffer, 300000000);
+  var frequency_region20k = LandCoverage.coverage(buffer_20k, 300000000);
+  var frequency_region50k = LandCoverage.coverage(buffer_50k, 300000000);
+  var frequency_region100k = LandCoverage.coverage(buffer_100k, 300000000);
   
   var elevationMinMax_city = minMaxElevation(polygon);
   var elevationMinMax_region20k = minMaxElevation(buffer_20k);
@@ -51,9 +53,9 @@ var stats = cities.map(function(feature) {
   return ee.Feature(
     null, 
     LandCoverage.metrics('city', frequency_city, ee.Number(polygon.area()))
-    .combine(LandCoverage.metrics('region_20', frequency_region, ee.Number(buffer_20k.area())))
-    .combine(LandCoverage.metrics('region_50', frequency_region, ee.Number(buffer_50k.area())))
-    .combine(LandCoverage.metrics('region_100', frequency_region, ee.Number(buffer_100k.area())))
+    .combine(LandCoverage.metrics('region_20', frequency_region20k, ee.Number(buffer_20k.area())))
+    .combine(LandCoverage.metrics('region_50', frequency_region50k, ee.Number(buffer_50k.area())))
+    .combine(LandCoverage.metrics('region_100', frequency_region100k, ee.Number(buffer_100k.area())))
   )
   .set('city_average_elevation', averageElevation(polygon))
   .set('city_min_elevation', aboveZero(elevationMinMax_city.get('b1_min')))
