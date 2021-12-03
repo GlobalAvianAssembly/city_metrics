@@ -17,6 +17,8 @@ function averageClimate(polygon) {
   });
 }
 
+var temp_scale = ee.Number(0.1)
+
 var stats = cities.map(function(feature) {
   var polygon = feature.geometry();
   
@@ -29,10 +31,10 @@ var stats = cities.map(function(feature) {
   .set('city_rainfall_average_annual', city_climate.get('bio12'))
   .set('city_rainfall_average_max_monthly', city_climate.get('bio13'))
   .set('city_rainfall_average_min_monthly', city_climate.get('bio14'))
-  .set('city_temperature_average_annual', city_climate.get('bio01'))
-  .set('city_temperature_average_max_monthly', city_climate.get('bio05'))
-  .set('city_temperature_average_min_monthly', city_climate.get('bio06'))
-  .set('city_temperature_average_range_monthly', city_climate.get('bio07'))
+  .set('city_temperature_average_annual', city_climate.get('bio01').multiply(temp_scale))
+  .set('city_temperature_average_max_monthly', city_climate.get('bio05').multiply(temp_scale))
+  .set('city_temperature_average_min_monthly', city_climate.get('bio06').multiply(temp_scale))
+  .set('city_temperature_average_range_monthly', city_climate.get('bio07').multiply(temp_scale))
   .set('city_name', feature.get('NAME_MAIN'));
 });
 
