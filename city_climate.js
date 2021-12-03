@@ -17,7 +17,7 @@ function averageClimate(polygon) {
   });
 }
 
-var temp_scale = ee.Number(0.1)
+var temp_scale = 0.1;
 
 var stats = cities.map(function(feature) {
   var polygon = feature.geometry();
