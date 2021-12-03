@@ -5,6 +5,15 @@ var cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million"),
 
 
 
+function averagePopulationDensity(polygon) {
+  return aboveZero(populationDensity.reduceRegion({
+    reducer: ee.Reducer.mean(),
+    geometry: polygon,
+    scale: 100,
+    maxPixels: 1e9
+  }).get('b1'));
+}
+
 var viz = {opacity: 0.5};
 
 Map.addLayer(climate, viz);
