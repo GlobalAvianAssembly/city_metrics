@@ -50,7 +50,7 @@ var stats = cities.map(function(feature) {
 Export.table.toCloudStorage({
   collection: stats,
   description: 'Export-city-population-density-to-gcs',
-  fileNamePrefix: 'city_copernicus_population_density',
+  fileNamePrefix: 'city_population_density',
   bucket:'urban_ebird'
 });
 
