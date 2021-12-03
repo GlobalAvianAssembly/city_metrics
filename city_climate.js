@@ -48,5 +48,7 @@ Export.table.toCloudStorage({
   bucket:'urban_ebird'
 });
 
+var viz = {opacity: 0.5};
+
 Map.addLayer(climate, viz);
 Map.addLayer(stats, {opacity: 0.3})
