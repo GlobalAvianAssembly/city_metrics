@@ -11,9 +11,13 @@ var ndvi_date = ndvi.select("NDVI").filterDate('2015-01-01', '2020-12-31')
 function averageNdvi(polygon) {
   return ndvi_date.filterBounds(polygon).map(
       function(image) {
-        image.redc
-      });
-    ).reduce(ee.Reducer.mean());
+        image.reduceRegion({
+          reducer: ee.Reducer.mean(),
+          geometry: polygon,
+          scale: 100,
+          maxPixels: 1e9
+        }).get('NDVI')
+      }).mean();
 }
 
 var ssm_date = moisture.select("ssm").filterDate('2015-01-01', '2020-12-31')
