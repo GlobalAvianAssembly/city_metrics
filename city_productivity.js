@@ -5,7 +5,7 @@ var ndvi = ee.ImageCollection("MODIS/006/MOD13Q1"),
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
 
-var ndvi_date = ndvi.select("NDVI").filterDate('2015-01-01', '2020-12-31')
+var mean_ndvi_date = ndvi.select("NDVI").filterDate('2015-01-01', '2020-12-31').mean();
 
 
 function averageNdvi(polygon) {
@@ -17,7 +17,7 @@ function averageNdvi(polygon) {
           scale: 100,
           maxPixels: 1e9
         }).get('NDVI'));
-      }).mean();
+      }).reduce(ee.Reducer.mean());
 }
 
 var ssm_date = moisture.select("ssm").filterDate('2015-01-01', '2020-12-31')
@@ -46,14 +46,14 @@ var stats = cities.map(function(feature) {
   .set('region_20_ndvi', averageNdvi(buffer_20k))
   .set('region_50_ndvi', averageNdvi(buffer_50k))
   .set('region_100_ndvi', averageNdvi(buffer_100k))
-  // .set('city_surface_moisture', averageSsm(polygon))
-  // .set('region_20_surface_moisture', averageSsm(buffer_20k))
-  // .set('region_50_surface_moisture', averageSsm(buffer_50k))
-  // .set('region_100_surface_moisture', averageSsm(buffer_100k))
-  // .set('city_subsurface_moisture', averageSusm(polygon))
-  // .set('region_20_subsurface_moisture', averageSusm(buffer_20k))
-  // .set('region_50_subsurface_moisture', averageSusm(buffer_50k))
-  // .set('region_100_subsurface_moisture', averageSusm(buffer_100k))
+  .set('city_surface_moisture', averageSsm(polygon))
+  .set('region_20_surface_moisture', averageSsm(buffer_20k))
+  .set('region_50_surface_moisture', averageSsm(buffer_50k))
+  .set('region_100_surface_moisture', averageSsm(buffer_100k))
+  .set('city_subsurface_moisture', averageSusm(polygon))
+  .set('region_20_subsurface_moisture', averageSusm(buffer_20k))
+  .set('region_50_subsurface_moisture', averageSusm(buffer_50k))
+  .set('region_100_subsurface_moisture', averageSusm(buffer_100k))
   .set('city_name', feature.get('NAME_MAIN'));
 });
 
