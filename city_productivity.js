@@ -7,28 +7,34 @@ var ndvi = ee.ImageCollection("MODIS/006/MOD13Q1"),
 
 var mean_ndvi_date = ndvi.select("NDVI").filterDate('2015-01-01', '2020-12-31').mean();
 
-
 function averageNdvi(polygon) {
-  return ndvi_date.filterBounds(polygon).map(
-      function(image) {
-        return ee.Image().set('NDVI_mean', image.reduceRegion({
-          reducer: ee.Reducer.mean(),
-          geometry: polygon,
-          scale: 100,
-          maxPixels: 1e9
-        }).get('NDVI'));
-      }).reduce(ee.Reducer.mean());
+  return mean_ndvi_date.reduceRegion({
+    reducer: ee.Reducer.mean(),
+    geometry: polygon,
+    scale: 100,
+    maxPixels: 1e9
+  }).get("NDVI");
 }
 
-var ssm_date = moisture.select("ssm").filterDate('2015-01-01', '2020-12-31')
-var susm_date = moisture.select("susm").filterDate('2015-01-01', '2020-12-31')
+var mean_ssm_date = moisture.select("ssm").filterDate('2015-01-01', '2020-12-31').mean()
+var mean_susm_date = moisture.select("susm").filterDate('2015-01-01', '2020-12-31').mean()
 
 function averageSsm(polygon) {
-  return ssm_date.filterBounds(polygon).reduce(ee.Reducer.mean());
+  return mean_ssm_date.reduceRegion({
+    reducer: ee.Reducer.mean(),
+    geometry: polygon,
+    scale: 100,
+    maxPixels: 1e9
+  }).get("ssm");
 }
 
 function averageSusm(polygon) {
-  return susm_date.filterBounds(polygon).reduce(ee.Reducer.mean());
+  return mean_susm_date.reduceRegion({
+    reducer: ee.Reducer.mean(),
+    geometry: polygon,
+    scale: 100,
+    maxPixels: 1e9
+  }).get("susm");
 }
 
 var stats = cities.map(function(feature) {
