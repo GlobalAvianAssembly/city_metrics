@@ -67,9 +67,8 @@ var stats = cities.map(function(feature) {
 Export.table.toCloudStorage({
   collection: stats,
   description: 'Export-city-ndvi-to-gcs',
-  fileNamePrefix: 'city_ndvi',
+  fileNamePrefix: 'city_ndvi_ssm_and_susm',
   bucket:'urban_ebird'
 });
 
 Map.addLayer(stats)
-Map.addLayer(moisture)
