@@ -4,28 +4,21 @@ var ndvi = ee.ImageCollection("MODIS/006/MOD13Q1"),
     cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
-var ndvi_date = ndvi.filterDate('2015-01-01', '2020-12-31')
+var ndvi_date = ndvi.select("NDVI").filterDate('2015-01-01', '2020-12-31')
                
 function averageNdvi(polygon) {
   return ndvi_date.filter(polygon).mean();
 }
 
+var ssm_date = moisture.select("ssm").filterDate('2015-01-01', '2020-12-31')
+var susm_date = moisture.select("susm").filterDate('2015-01-01', '2020-12-31')
+
 function averageSsm(polygon) {
-  return moisture.select('ssm').reduceRegion({
-    reducer: ee.Reducer.mean(),
-    geometry: polygon,
-    scale: 100,
-    maxPixels: 1e9
-  }).get("ssm");
+  return ssm_date.filter(polygon).mean();
 }
 
 function averageSusm(polygon) {
-  return moisture.select('susm').reduceRegion({
-    reducer: ee.Reducer.mean(),
-    geometry: polygon,
-    scale: 100,
-    maxPixels: 1e9
-  }).get("susm");
+  return susm_date.filter(polygon).mean();
 }
 
 var stats = cities.map(function(feature) {
