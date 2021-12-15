@@ -7,18 +7,18 @@ var ndvi = ee.ImageCollection("MODIS/006/MOD13Q1"),
 var ndvi_date = ndvi.select("NDVI").filterDate('2015-01-01', '2020-12-31')
                
 function averageNdvi(polygon) {
-  return ndvi_date.filterBounds(polygon).reduce(ee.Reducer.mean()).get("NDVI");
+  return ndvi_date.filterBounds(polygon).reduce(ee.Reducer.mean());
 }
 
 var ssm_date = moisture.select("ssm").filterDate('2015-01-01', '2020-12-31')
 var susm_date = moisture.select("susm").filterDate('2015-01-01', '2020-12-31')
 
 function averageSsm(polygon) {
-  return ssm_date.filterBounds(polygon).reduce(ee.Reducer.mean()).get("ssm");
+  return ssm_date.filterBounds(polygon).reduce(ee.Reducer.mean());
 }
 
 function averageSusm(polygon) {
-  return susm_date.filterBounds(polygon).reduce(ee.Reducer.mean()).get("susm");
+  return susm_date.filterBounds(polygon).reduce(ee.Reducer.mean());
 }
 
 var stats = cities.map(function(feature) {
