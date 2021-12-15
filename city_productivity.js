@@ -17,7 +17,7 @@ function averageNdvi(polygon) {
           scale: 100,
           maxPixels: 1e9
         }).get('NDVI'));
-      }).select("NDVI_mean").mean();
+      });
 }
 
 var ssm_date = moisture.select("ssm").filterDate('2015-01-01', '2020-12-31')
