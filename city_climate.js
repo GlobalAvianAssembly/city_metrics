@@ -4,10 +4,6 @@ var cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million"),
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
 
-function aboveZero(x) {
-  return ee.Number(x).max(0);
-}
-
 function averageClimate(polygon) {
   return climate.reduceRegion({
     reducer: ee.Reducer.mean(),
