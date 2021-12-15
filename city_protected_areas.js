@@ -1,1 +1,1 @@
-var protected_areas = ee.FeatureCollection("WCMC/WDPA/current/polygons")
+var protected_areas = ee.FeatureCollection("WCMC/WDPA/current/polygons");
