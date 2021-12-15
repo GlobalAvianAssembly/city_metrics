@@ -11,7 +11,7 @@ var ndvi_date = ndvi.select("NDVI").filterDate('2015-01-01', '2020-12-31')
 function averageNdvi(polygon) {
   return ndvi_date.filterBounds(polygon).map(
       function(image) {
-        image.reduceRegion({
+        return image.reduceRegion({
           reducer: ee.Reducer.mean(),
           geometry: polygon,
           scale: 100,
