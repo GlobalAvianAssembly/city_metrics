@@ -4,13 +4,10 @@ var ndvi = ee.ImageCollection("MODIS/006/MOD13Q1"),
     cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
+var ndvi_date = ndvi.filterDate('2015-01-01', '2020-12-31')
+               
 function averageNdvi(polygon) {
-  return ndvi.select("NDVI").reduceRegion({
-    reducer: ee.Reducer.mean(),
-    geometry: polygon,
-    scale: 100,
-    maxPixels: 1e9
-  }).get('NDVI');
+  return ndvi_date.filter(polygon).mean();
 }
 
 function averageSsm(polygon) {
