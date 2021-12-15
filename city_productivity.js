@@ -29,7 +29,7 @@ var stats = cities.map(function(feature) {
   
   
   return ee.Feature(
-    null, 
+    polygon, 
     new ee.Dictionary()
   )
   .set('city_ndvi', averageNdvi(polygon))
