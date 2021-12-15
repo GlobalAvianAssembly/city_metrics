@@ -56,3 +56,4 @@ Export.table.toCloudStorage({
 });
 
 Map.addLayer(stats)
+Map.addLayer(moisture)
