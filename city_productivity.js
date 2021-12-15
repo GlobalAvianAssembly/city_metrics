@@ -4,10 +4,16 @@ var ndvi = ee.ImageCollection("MODIS/006/MOD13Q1"),
     cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
+
 var ndvi_date = ndvi.select("NDVI").filterDate('2015-01-01', '2020-12-31')
-               
+
+
 function averageNdvi(polygon) {
-  return ndvi_date.filterBounds(polygon).reduce(ee.Reducer.mean());
+  return ndvi_date.filterBounds(polygon).map(
+      function(image) {
+        image.redc
+      });
+    ).reduce(ee.Reducer.mean());
 }
 
 var ssm_date = moisture.select("ssm").filterDate('2015-01-01', '2020-12-31')
@@ -57,3 +63,4 @@ Export.table.toCloudStorage({
 
 Map.addLayer(stats)
 Map.addLayer(moisture)
+*/
