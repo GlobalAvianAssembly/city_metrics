@@ -4,17 +4,13 @@ var populationDensity = ee.Image("users/jamesr/GHS_POP_E2015_GLOBE_R2019A_54009_
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
 
-function aboveZero(x) {
-  return ee.Number(x).max(0);
-}
-
 function averagePopulationDensity(polygon) {
-  return aboveZero(populationDensity.reduceRegion({
+  return populationDensity.reduceRegion({
     reducer: ee.Reducer.mean(),
     geometry: polygon,
     scale: 100,
     maxPixels: 1e9
-  }).get('b1'));
+  }).get('b1');
 }
 
 function minMaxPopulationDensity(polygon) {
@@ -42,17 +38,17 @@ var stats = cities.map(function(feature) {
     new ee.Dictionary()
   )
   .set('city_average_pop_dens', averagePopulationDensity(polygon))
-  .set('city_min_pop_dens', aboveZero(popDensMinMax_city.get('b1_min')))
-  .set('city_max_pop_dens', aboveZero(popDensMinMax_city.get('b1_max')))
+  .set('city_min_pop_dens', popDensMinMax_city.get('b1_min'))
+  .set('city_max_pop_dens', popDensMinMax_city.get('b1_max'))
   .set('region_20_average_pop_dens', averagePopulationDensity(buffer_20k))
-  .set('region_20_min_pop_dens', aboveZero(popDensMinMax_region20k.get('b1_min')))
-  .set('region_20_max_pop_dens', aboveZero(popDensMinMax_region20k.get('b1_max')))
+  .set('region_20_min_pop_dens', popDensMinMax_region20k.get('b1_min'))
+  .set('region_20_max_pop_dens', popDensMinMax_region20k.get('b1_max'))
   .set('region_50_average_pop_dens', averagePopulationDensity(buffer_50k))
-  .set('region_50_min_pop_dens', aboveZero(popDensMinMax_region50k.get('b1_min')))
-  .set('region_50_max_pop_dens', aboveZero(popDensMinMax_region50k.get('b1_max')))
+  .set('region_50_min_pop_dens', popDensMinMax_region50k.get('b1_min'))
+  .set('region_50_max_pop_dens', popDensMinMax_region50k.get('b1_max'))
   .set('region_100_average_pop_dens', averagePopulationDensity(buffer_100k))
-  .set('region_100_min_pop_dens', aboveZero(popDensMinMax_region100k.get('b1_min')))
-  .set('region_100_max_pop_dens', aboveZero(popDensMinMax_region100k.get('b1_max')))
+  .set('region_100_min_pop_dens', popDensMinMax_region100k.get('b1_min'))
+  .set('region_100_max_pop_dens', popDensMinMax_region100k.get('b1_max'))
   .set('city_name', feature.get('NAME_MAIN'));
 });
 
