@@ -14,12 +14,13 @@ function protected_area_coverage(polygon) {
 
 function percentage_protected(polygon) {
   var cover_frequency = protected_area_coverage(polygon);
-  var area_covered_by_protected = ee.Number(cover_frequency.get('b1', 0));
+  var area_covered_by_protected = ee.Number(cover_frequency.get('b1', 0).get(1));
   var total_area = ee.Number(polygon.area());
   
   return area_covered_by_protected.divide(total_area);
 }
 
+/*
 var stats = cities.map(function(feature) {
   var polygon = feature.geometry();
   
@@ -34,5 +35,7 @@ var stats = cities.map(function(feature) {
     .set('region_100km_area_protected', percentage_protected(buffer_100k));
 });
   
-Map.addLayer(stats);
+  */
+
+print(protected_area_coverage(cities.first().geometry()).get('b1'))
   
