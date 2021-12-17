@@ -7,8 +7,8 @@ function protected_area_coverage(polygon) {
   return ee.Dictionary(protected_areas.reduceRegion({
     reducer: ee.Reducer.frequencyHistogram(),
     geometry: polygon,
-    scale: 10,
-    maxPixels: 3000000000000
+    scale: 100,
+    maxPixels: 300000000
   }).get('b1'));
 }
 
