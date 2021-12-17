@@ -17,7 +17,7 @@ percentage_protected = function(polygon) {
   var area_covered_by_protected = ee.Number(frequencyDictionary.get('b1', 0);
   var total_area = polygon.area();
   
-  return
+  return area_covered_by_protected.divide(total_area);
 }
 
 var stats = cities.map(function(feature) {
@@ -27,6 +27,7 @@ var stats = cities.map(function(feature) {
   var buffer_50k = polygon.buffer(50000).difference(polygon);
   var buffer_100k = polygon.buffer(100000).difference(polygon);
   
-  var frequency = protected_area_coverage(polygon);
+  return
+}
   
   
