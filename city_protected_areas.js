@@ -16,5 +16,9 @@ protected_area_coverage = function(polygon) {
 var stats = cities.map(function(feature) {
   var polygon = feature.geometry();
   
+  var buffer_20k = polygon.buffer(20000).difference(polygon);
+  var buffer_50k = polygon.buffer(50000).difference(polygon);
+  var buffer_100k = polygon.buffer(100000).difference(polygon);
+  
   var frequency = protected_area_coverage(polygon);
   
