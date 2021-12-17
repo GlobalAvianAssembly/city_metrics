@@ -15,7 +15,7 @@ function protected_area_coverage(polygon) {
 function percentage_protected(polygon) {
   var cover_frequency = protected_area_coverage(polygon);
   var area_covered_by_protected = ee.Number(cover_frequency.get('1', 0));
-  var total_area = ee.Number(polygon.area());
+  var total_area = ee.Number(polygon.area()).divide(10000);
   return ee.Dictionary()
     .set('total_area', total_area)
     .set('protected_area', area_covered_by_protected)
