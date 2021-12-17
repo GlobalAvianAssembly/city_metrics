@@ -9,12 +9,12 @@ function protected_area_coverage(polygon) {
     geometry: polygon,
     scale: 100,
     maxPixels: 300000000
-  }).get('b1', 0));
+  }).get('b1'));
 }
 
 function percentage_protected(polygon) {
   var cover_frequency = protected_area_coverage(polygon);
-  var area_covered_by_protected = ee.Number(cover_frequency.get('1'));
+  var area_covered_by_protected = ee.Number(cover_frequency.get('1', 0));
   var total_area = ee.Number(polygon.area());
   
   return area_covered_by_protected.divide(total_area);
