@@ -38,6 +38,5 @@ var stats = cities.map(function(feature) {
     .set('region_100km_area_protected', percentage_protected(buffer_100k));
 });
 
-Map.addLayer(protected_areas)
 Map.addLayer(stats)
   
