@@ -38,5 +38,13 @@ var stats = cities.map(function(feature) {
     .set('region_100km_area_protected', percentage_protected(buffer_100k));
 });
 
+Export.table.toCloudStorage({
+  collection: stats,
+  description: 'Export-city-protected-areas-to-gcs',
+  fileNamePrefix: 'city_protected_areas',
+  bucket:'urban_ebird'
+});
+
+
 Map.addLayer(stats)
   
