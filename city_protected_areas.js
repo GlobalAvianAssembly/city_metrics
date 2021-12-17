@@ -32,10 +32,10 @@ var stats = cities.map(function(feature) {
   
   return ee.Feature(polygon)
     .set('city_name', feature.get('NAME_MAIN'))
-    .set('city_area_protected', percentage_protected(polygon))
-    .set('region_20km_area_protected', percentage_protected(buffer_20k))
-    .set('region_50km_area_protected', percentage_protected(buffer_50k))
-    .set('region_100km_area_protected', percentage_protected(buffer_100k));
+    .set('city_area_protected', percentage_protected(polygon).get('percent_protected'))
+    .set('region_20km_area_protected', percentage_protected(buffer_20k).get('percent_protected'))
+    .set('region_50km_area_protected', percentage_protected(buffer_50k).get('percent_protected'))
+    .set('region_100km_area_protected', percentage_protected(buffer_100k).get('percent_protected'));
 });
 
 Export.table.toCloudStorage({
