@@ -29,6 +29,7 @@ var stats = cities.map(function(feature) {
   var buffer_100k = polygon.buffer(100000).difference(polygon);
   
   return ee.Feature(polygon)
+    .set('city_name', feature.get('NAME_MAIN'))
     .set('city_area_protected', percentage_protected(polygon))
     .set('region_20km_area_protected', percentage_protected(buffer_20k))
     .set('region_50km_area_protected', percentage_protected(buffer_50k))
