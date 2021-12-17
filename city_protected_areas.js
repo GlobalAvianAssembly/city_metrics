@@ -12,6 +12,13 @@ protected_area_coverage = function(polygon) {
   });
 }
 
+percentage_protected = function(polygon) {
+  var cover_frequency = protected_area_coverage(polygon);
+  var area_covered_by_protected = ee.Number(frequencyDictionary.get('b1', 0);
+  var total_area = polygon.area();
+  
+  return
+}
 
 var stats = cities.map(function(feature) {
   var polygon = feature.geometry();
@@ -21,4 +28,5 @@ var stats = cities.map(function(feature) {
   var buffer_100k = polygon.buffer(100000).difference(polygon);
   
   var frequency = protected_area_coverage(polygon);
+  
   
