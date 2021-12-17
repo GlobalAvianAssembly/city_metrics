@@ -11,3 +11,10 @@ protected_area_coverage = function(polygon) {
     maxPixels: 300000000
   });
 }
+
+
+var stats = cities.map(function(feature) {
+  var polygon = feature.geometry();
+  
+  var frequency = protected_area_coverage(polygon);
+  
