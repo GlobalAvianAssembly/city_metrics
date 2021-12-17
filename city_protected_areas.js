@@ -20,7 +20,7 @@ function percentage_protected(polygon) {
   return area_covered_by_protected.divide(total_area);
 }
 
-/*
+
 var stats = cities.map(function(feature) {
   var polygon = feature.geometry();
   
@@ -35,9 +35,5 @@ var stats = cities.map(function(feature) {
     .set('region_100km_area_protected', percentage_protected(buffer_100k));
 });
   
-  */
-  
-var result = percentage_protected(cities.first().geometry());
-
-print(result)
+print(stats)
   
