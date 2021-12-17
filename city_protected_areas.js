@@ -4,17 +4,17 @@ var cities = ee.FeatureCollection("users/jamesr/UrbanAreasOver2Million"),
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
 function protected_area_coverage(polygon) {
-  return protected_areas.reduceRegion({
+  return ee.Dictionary(protected_areas.reduceRegion({
     reducer: ee.Reducer.frequencyHistogram(),
     geometry: polygon,
     scale: 100,
     maxPixels: 300000000
-  });
+  }).get('b1', 0));
 }
 
 function percentage_protected(polygon) {
   var cover_frequency = protected_area_coverage(polygon);
-  var area_covered_by_protected = ee.Number(cover_frequency.get('b1', 0).get(1));
+  var area_covered_by_protected = ee.Number(cover_frequency.get('1'));
   var total_area = ee.Number(polygon.area());
   
   return area_covered_by_protected.divide(total_area);
@@ -36,6 +36,8 @@ var stats = cities.map(function(feature) {
 });
   
   */
+  
+var result = percentage_protected(cities.first().geometry());
 
-print(protected_area_coverage(cities.first().geometry()).get('b1'))
+print(result)
   
