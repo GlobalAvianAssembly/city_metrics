@@ -23,9 +23,9 @@ var region = ee.Geometry.BBox(-122.0859, 37.0436, -122.0626, 37.0586)
 Map.addLayer(region);
 
 Export.image.toDrive({
-  image: ssm
-  description: 'WorldSSM.tiff',
-  scale: 2500,
+  image: ssm.select('ssm').mean(),
+  description: 'WorldSSM',
+  scale: 25000,
   region: worldRegion,
   fileFormat: 'GeoTIFF'
 })
