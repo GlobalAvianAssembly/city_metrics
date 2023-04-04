@@ -67,12 +67,30 @@ regional coverage metrics:
 
 ### city_protected_areas.js
 Finds the total area of the city and region around city that is covered by a protected area from the UNEP-WCMC and IUCN (2021) Protected Areas dataset.
-This data is used to populate columns in `download_data__input__city_data.csv``:
+This data is used to populate columns in `download_data__input__city_data.csv`:
 * `city_percentage_protected`
 * `region_20km_percentage_protected`
 * `region_50km_percentage_protected`
 * `region_100km_percentage_protected`
 
+### hotspot_habitat_metrics.js
+Finds the landscape, population density, and elevations variables for the 5km buffered area around each hotspot from Copernicus Global Land Covers dataset (Buchhorn et al. 2019), Global Human Settlement Layer population raster (Schiavina et al. 2019), and EEA eleveation dataset (European Environment Agency 2016), and Global Estuary database (Alder 2003).
+This data is used to populate columns in `download_data__output__hotspot_metrics_birdlife.csv`, `download_data__output__hotspot_metrics_merlin.csv`, `download_data__output__hotspot_metrics_both.csv`, and `download_data__output__hotspot_metrics_either.csv`.
 
+Landscape variables:
+* `closed_forest`, `cultivated`, `herbaceous_vegetation`, `herbaceous_wetland`, `open_forest`, `permanent_water`, `shrubs`, `urban`
 
+Elevation variables:
+* `mean_elevation`, `elevation_delta`
 
+Population density variables:
+* `average_population_density`
+
+### output_realms.js
+Used to output the realm image for use in figures.
+
+### species_pools2.js
+Used to calculate the overlap between Birdlife Distributions (BirdLife International and Handbook of the Birds of the World 2020) and city vectors for producing the birdlife regional pools for each city.
+
+### sss_image_downlaod.js
+Used to download a raster of global SSM for use in figures.
