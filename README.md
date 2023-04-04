@@ -5,7 +5,7 @@ The javascript files within this repository can be imported into https://code.ea
 
 The outputs from each file are exported to a Google Cloud Storage bucket, downloaded, and imported into Google BigQuery.  
 
-All data was imported into BigQuery (Google 2022) for modelling using dbt™ (DBT Labs 2022). 
+All data imported into BigQuery (Google 2022) was then modelled using dbt™ (DBT Labs 2022). 
 Final datasets were extracted in R using bigrquery (Edmondson 2019) and analysis was performed in RStudio (RStudio Team 2022). 
 Further details of our approach can be found in Appendix 4 of our manuscript. The final datasets can be found in our R analysis data repository (link provided in manuscript).
 
